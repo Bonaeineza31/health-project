@@ -1,105 +1,211 @@
+<!DOCTYPE html>
 <html lang="en">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>
-   Sign In
-  </title>
-  <script src="https://cdn.tailwindcss.com">
-  </script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
- </head>
- <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-  <div class="flex w-full max-w-4xl bg-white shadow-lg rounded-lg overflow-hidden">
-   <div class="w-1/2 bg-blue-600 flex flex-col items-center justify-center p-12">
-    <img alt="A female doctor with a stethoscope" class="absolute inset-0 w-full h-full object-cover opacity-50" src="https://placehold.co/300x300"/>
-    <div class="relative z-10 text-center">
-     <h2 class="text-4xl font-bold text-white mb-2">
-      Welcome Back!
-     </h2>
-     <p class="text-white">
-      Enter personal details to your account
-     </p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="welcome.css">
+</head>
+<body>
+    <div class="welcome-container">
+        <div class="language-selector">
+            <button>EN</button>
+            <button>FR</button>
+            <button>RW</button>
+        </div>
+
+        <div class="welcome-content">
+            <div class="left-section" style="background-image: linear-gradient(rgba(30, 87, 153, 0.8), rgba(30, 87, 153, 0.8)), url('Premium Photo _ Beautiful smiling female doctor stand in office.jpg');">
+                <div class="left-content">
+                    <h1>Welcome Back!</h1>
+                    <p>Enter personal details to your account</p>
+                    <div class="tab-buttons-mobile">
+                        <button class="active" onclick="toggleTab('signin')">Sign In</button>
+                        <button onclick="toggleTab('signup')">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-section">
+                <div class="card">
+                    <div class="tab-buttons">
+                        <button class="active" onclick="toggleTab('signin')">Sign In</button>
+                        <button onclick="toggleTab('signup')">Sign Up</button>
+                    </div>
+
+                    <div class="error-message" id="error-message" style="display: none;"></div>
+
+                    <form id="signin-form" class="signin-form" onsubmit="handleSignIn(event)">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="example@mail.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="••••••••" required>
+                        </div>
+
+                        <div class="form-options">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="rememberMe">
+                                <label for="rememberMe">Remember me</label>
+                            </div>
+                            <a href="#" class="forgot-password">Forgot password?</a>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Sign In</button>
+
+                        <div class="separator">
+                            <span>or</span>
+                        </div>
+
+                        <div class="social-login">
+                            <p>Continue with</p>
+                            <div class="social-icons">
+                                <button type="button" class="social-btn facebook"></button>
+                                <button type="button" class="social-btn google"></button>
+                                <button type="button" class="social-btn apple"></button>
+                            </div>
+                        </div>
+
+                        <p class="switch-form">Don't have an account? <button type="button" onclick="toggleTab('signup')">Sign Up</button></p>
+                    </form>
+
+                    <form id="signup-form" class="signup-form" style="display: none;" onsubmit="handleSignUp(event)">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" placeholder="John Doe" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="signupEmail">Email</label>
+                            <input type="email" id="signupEmail" placeholder="example@mail.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="signupPassword">Password</label>
+                            <input type="password" id="signupPassword" placeholder="••••••••" required>
+                        </div>
+
+                        <div class="checkbox-group terms">
+                            <input type="checkbox" id="agreeTerms" required>
+                            <label for="agreeTerms">I agree to the processing of Personal data</label>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Sign Up</button>
+
+                        <div class="separator">
+                            <span>or</span>
+                        </div>
+
+                        <div class="social-login">
+                            <p>Continue with</p>
+                            <div class="social-icons">
+                                <button type="button" class="social-btn facebook"></button>
+                                <button type="button" class="social-btn google"></button>
+                                <button type="button" class="social-btn apple"></button>
+                            </div>
+                        </div>
+
+                        <p class="switch-form">Already have an account? <button type="button" onclick="toggleTab('signin')">Sign In</button></p>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-   </div>
-   <div class="w-1/2 p-8">
-    <div class="flex justify-end mb-4">
-     <button class="bg-blue-600 text-white px-4 py-2 rounded-md">
-      EN
-     </button>
-     <button class="ml-2 bg-gray-200 text-gray-600 px-4 py-2 rounded-md">
-      FR
-     </button>
-     <button class="ml-2 bg-gray-200 text-gray-600 px-4 py-2 rounded-md">
-      KIN
-     </button>
-    </div>
-    <div class="mb-8">
-     <div class="flex border-b-2 border-gray-200">
-      <button class="text-blue-600 font-semibold pb-2 border-b-4 border-blue-600">
-       Sign In
-      </button>
-      <button class="ml-8 text-gray-600 pb-2">
-       Sign Up
-      </button>
-     </div>
-    </div>
-    <form>
-     <div class="mb-4">
-      <label class="block text-gray-700">
-       Email
-      </label>
-      <input class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="example@mail.com" type="email"/>
-     </div>
-     <div class="mb-4">
-      <label class="block text-gray-700">
-       Password
-      </label>
-      <input class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="********" type="password"/>
-     </div>
-     <div class="flex items-center justify-between mb-4">
-      <label class="flex items-center">
-       <input class="form-checkbox" type="checkbox"/>
-       <span class="ml-2 text-gray-700">
-        Remember me
-       </span>
-      </label>
-      <a class="text-blue-600" href="#">
-       Forgot password?
-      </a>
-     </div>
-     <button class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">
-      Sign In
-     </button>
-     <div class="flex items-center justify-center my-4">
-      <span class="text-gray-500">
-       or
-      </span>
-     </div>
-     <div class="flex items-center justify-center space-x-4">
-      <button class="bg-gray-200 p-2 rounded-full">
-       <i class="fab fa-facebook-f text-blue-600">
-       </i>
-      </button>
-      <button class="bg-gray-200 p-2 rounded-full">
-       <i class="fab fa-google text-red-600">
-       </i>
-      </button>
-      <button class="bg-gray-200 p-2 rounded-full">
-       <i class="fab fa-apple text-gray-800">
-       </i>
-      </button>
-     </div>
-     <div class="text-center mt-4">
-      <span class="text-gray-600">
-       Don't have an account?
-      </span>
-      <a class="text-blue-600" href="#">
-       Sign Up
-      </a>
-     </div>
-    </form>
-   </div>
-  </div>
- </body>
+
+    <script>
+        const API_URL = 'https://evuriro-backend.onrender.com';
+
+        function toggleTab(tab) {
+            const signinForm = document.getElementById('signin-form');
+            const signupForm = document.getElementById('signup-form');
+            const tabButtons = document.querySelectorAll('.tab-buttons button');
+
+            if (tab === 'signin') {
+                signinForm.style.display = 'block';
+                signupForm.style.display = 'none';
+                tabButtons[0].classList.add('active');
+                tabButtons[1].classList.remove('active');
+            } else {
+                signinForm.style.display = 'none';
+                signupForm.style.display = 'block';
+                tabButtons[0].classList.remove('active');
+                tabButtons[1].classList.add('active');
+            }
+        }
+
+        async function handleSignIn(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+
+            try {
+                const response = await fetch(`${API_URL}/user/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message);
+                }
+
+                // Handle successful login (e.g., store token, redirect)
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('userEmail', data.user.email);
+                alert('Login successful! Redirecting to dashboard...');
+                window.location.href = '/dashboard'; // Redirect to dashboard
+            } catch (error) {
+                errorMessage.textContent = error.message;
+                errorMessage.style.display = 'block';
+            }
+        }
+
+        async function handleSignUp(event) {
+            event.preventDefault();
+            const name = document.getElementById('fullName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            const errorMessage = document.getElementById('error-message');
+
+            if (!agreeTerms) {
+                errorMessage.textContent = "Please agree to the terms";
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/user/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name, email, password }),
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message);
+                }
+
+                // Handle successful registration (e.g., store token, redirect)
+                localStorage.setItem('token', data.token);
+                alert('Registration successful! Redirecting to dashboard...');
+                window.location.href = '/dashboard'; // Redirect to dashboard
+            } catch (error) {
+                errorMessage.textContent = error.message;
+                errorMessage.style.display = 'block';
+            }
+        }
+    </script>
+</body>
 </html>
