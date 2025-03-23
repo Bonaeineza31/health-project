@@ -21,6 +21,7 @@
                     <p>Enter personal details to your account</p>
                     <div class="tab-buttons-mobile">
                         <button class="active" onclick="toggleTab('signin')">Sign In</button>
+                        <button type="button" class="guest-btn" onclick="loginAsGuest()">Login as Guest</button>
                         <button onclick="toggleTab('signup')">Sign Up</button>
                     </div>
                 </div>
@@ -206,6 +207,12 @@
                 errorMessage.textContent = error.message;
                 errorMessage.style.display = 'block';
             }
+            function loginAsGuest() {
+        // You can set a flag in localStorage to indicate this is a guest session
+        localStorage.setItem('guestMode', 'true');
+        // Redirect to dashboard
+            window.location.href = 'dashboard.html';
+    }
         }
     </script>
 </body>
