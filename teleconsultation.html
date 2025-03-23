@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teleconsultation - Evruriro</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/teleconsultation.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Include navbar -->
+    <div id="navbar-container"></div>
+    
+    <div class="content-container">
+      <!-- Include sidebar -->
+      <div id="sidebar-container"></div>
+      
+      <main class="main-content">
+        <div class="page-header">
+          <h1>Teleconsultation</h1>
+        </div>
+        
+        <div class="telecon-container">
+          <div class="upcoming-consultations">
+            <h2>Upcoming Teleconsultations</h2>
+            
+            <div class="consultation-list" id="upcomingConsultations">
+              <!-- Will be populated by JavaScript -->
+            </div>
+          </div>
+          
+          <div class="start-consultation">
+            <h2>Quick Connect</h2>
+            <p>Connect with a doctor now for urgent consultations</p>
+            
+            <div class="specialty-selection">
+              <h3>Select Specialty</h3>
+              <div class="specialty-grid">
+                <button class="specialty-item" data-specialty="general">
+                  <i class="fa fa-user-md"></i>
+                  <span>General</span>
+                </button>
+                <button class="specialty-item" data-specialty="cardiology">
+                  <i class="fa fa-heartbeat"></i>
+                  <span>Cardiology</span>
+                </button>
+                <button class="specialty-item" data-specialty="dermatology">
+                  <i class="fa fa-leaf"></i>
+                  <span>Dermatology</span>
+                </button>
+                <button class="specialty-item" data-specialty="pediatrics">
+                  <i class="fa fa-child"></i>
+                  <span>Pediatrics</span>
+                </button>
+              </div>
+            </div>
+            
+            <div class="consultation-actions">
+              <button class="btn primary" id="startEmergencyConsultation">
+                <i class="fa fa-phone"></i> Start Emergency Consultation
+              </button>
+              <button class="btn secondary" id="scheduleConsultation">
+                <i class="fa fa-calendar"></i> Schedule for Later
+              </button>
+            </div>
+          </div>
+          
+          <div class="past-consultations">
+            <h2>Past Consultations</h2>
+            
+            <div class="consultation-history" id="pastConsultations">
+              <!-- Will be populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+        
+        <!-- Teleconsultation Room Modal -->
+        <div id="teleconModal" class="telecon-modal">
+          <div class="telecon-content">
+            <div class="telecon-header">
+              <h2>Consultation with <span id="doctorName">Dr. Smith</span></h2>
+              <div class="call-timer" id="callTimer">00:00</div>
+              <div class="call-controls">
+                <button class="call-btn mute-btn">
+                  <i class="fa fa-microphone-slash"></i>
+                </button>
+                <button class="call-btn video-btn">
+                  <i class="fa fa-video-camera"></i>
+                </button>
+                <button class="call-btn end-btn">
+                  <i class="fa fa-phone"></i>
+                </button>
+              </div>
+            </div>
+            
+            <div class="telecon-body">
+              <div class="video-container">
+                <div class="main-video">
+                  <div class="video-placeholder doctor">
+                    <i class="fa fa-user-md"></i>
+                    <span>Doctor's camera is connecting...</span>
+                  </div>
+                </div>
+                <div class="self-video">
+                  <div class="video-placeholder self">
+                    <i class="fa fa-user"></i>
+                    <span>Your camera</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                  <!-- Will be populated by JavaScript -->
+                </div>
+                <div class="chat-input">
+                  <input type="text" id="messageInput" placeholder="Type a message...">
+                  <button id="sendMessage">
+                    <i class="fa fa-paper-plane"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/teleconsultation.js"></script>
+</body>
+</html>

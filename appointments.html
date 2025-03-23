@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schedule Appointment - Evruriro</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/appointments.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Include navbar -->
+    <div id="navbar-container"></div>
+    
+    <div class="content-container">
+      <!-- Include sidebar -->
+      <div id="sidebar-container"></div>
+      
+      <main class="main-content">
+        <div class="page-header">
+          <h1>Schedule an Appointment</h1>
+          <p>Find available healthcare professionals and book your next visit</p>
+        </div>
+        
+        <div class="appointment-container">
+          <div class="appointment-filters">
+            <div class="search-box">
+              <input type="text" id="doctorSearch" placeholder="Search by doctor name or keywords">
+            </div>
+            
+            <div class="filter-group">
+              <select id="specialtyFilter" class="filter-select">
+                <option value="">All Specialties</option>
+                <option value="cardiology">Cardiology</option>
+                <option value="dermatology">Dermatology</option>
+                <option value="internal">Internal Medicine</option>
+                <option value="neurology">Neurology</option>
+                <option value="pediatrics">Pediatrics</option>
+              </select>
+            </div>
+            
+            <div class="appointment-type-filter">
+              <button class="type-btn active" data-type="in-person">In-Person</button>
+              <button class="type-btn" data-type="virtual">Virtual</button>
+            </div>
+            
+            <button class="btn secondary" id="clearFilters">Clear Filters</button>
+          </div>
+          
+          <div class="doctors-list" id="doctorsList">
+            <!-- Will be populated by JavaScript -->
+          </div>
+          
+          <div id="appointmentModal" class="modal">
+            <div class="modal-content">
+              <span class="close-modal">&times;</span>
+              <h2>Schedule with <span id="selectedDoctor"></span></h2>
+              
+              <div class="appointment-form">
+                <div class="form-group">
+                  <label for="appointmentDate">Select Date</label>
+                  <input type="date" id="appointmentDate" required>
+                </div>
+                
+                <div class="form-group">
+                  <label>Available Time Slots</label>
+                  <div class="time-slots" id="timeSlots">
+                    <!-- Will be populated by JavaScript -->
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="reasonVisit">Reason for Visit</label>
+                  <textarea id="reasonVisit" rows="3" placeholder="Briefly describe your symptoms or reason for appointment"></textarea>
+                </div>
+                
+                <div class="form-actions">
+                  <button class="btn secondary" id="cancelAppointment">Cancel</button>
+                  <button class="btn primary" id="confirmAppointment">Book Appointment</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/appointments.js"></script>
+</body>
+</html>
