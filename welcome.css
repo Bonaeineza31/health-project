@@ -374,3 +374,19 @@ body {
 .apple-icon {
   background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23000000"><path d="M17.076 12.76c-.017-1.614.772-2.83 2.374-3.73-1.004-1.424-2.607-2.2-4.694-2.333-1.897-.127-3.933 1.074-4.697 1.074-.815 0-2.632-.999-4.06-.999C2.756 6.772 0 8.793 0 12.899c0 .966.182 1.96.543 2.981.482 1.36 2.22 4.68 4.026 4.63 1.075-.03 1.671-.774 3.215-.774 1.52 0 2.069.774 3.215.774 1.814.03 3.393-3.039 3.844-4.405-2.454-1.193-2.767-3.456-2.767-3.345zM14.14 4.282c.983-1.16 1.676-2.733 1.488-4.282-1.541.082-3.33 1.006-4.372 2.166-.91.997-1.745 2.583-1.528 4.076 1.675.12 3.44-.824 4.413-1.96z"/></svg>') no-repeat center center;
 }
+.guest-btn {
+  background-color: #f0f0f0;
+  color: #333;
+  margin-top: 10px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.guest-btn:hover {
+  background-color: #e0e0e0;
+}
