@@ -57,6 +57,9 @@ body {
   align-items: center;
   text-align: center;
   position: relative;
+  background-size: cover !important; /* Ensures the image covers the entire section */
+  background-repeat: no-repeat !important; /* Prevents repetition */
+  background-position: center !important;
 }
 
 
@@ -349,4 +352,25 @@ body {
   .left-section p {
       font-size: 14px;
   }
+}
+
+/* Social media icons */
+.facebook-icon, 
+.google-icon, 
+.apple-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+.facebook-icon {
+  background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>') no-repeat center center;
+}
+
+.google-icon {
+  background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23EA4335" d="M5.266 9.765A7.077 7.077 0 0 1 12 4.909c1.69 0 3.218.6 4.418 1.582L19.91 3C17.782 1.145 15.055 0 12 0 7.27 0 3.198 2.698 1.24 6.65l4.026 3.115Z"/><path fill="%2334A853" d="M16.04 18.013c-1.09.703-2.474 1.078-4.04 1.078a7.077 7.077 0 0 1-6.723-4.823l-4.04 3.067A11.965 11.965 0 0 0 12 24c2.933 0 5.735-1.043 7.834-3l-3.793-2.987Z"/><path fill="%23FBBC05" d="M5.276 14.268A7.08 7.08 0 0 1 4.909 12c0-.782.125-1.533.357-2.235L1.24 6.65A11.934 11.934 0 0 0 0 12c0 1.92.445 3.73 1.237 5.335l4.04-3.067Z"/><path fill="%234285F4" d="M12 16.364c1.66 0 3.16-.58 4.336-1.587l3.793 2.987C18.254 19.643 15.426 21 12 21a11.965 11.965 0 0 1-10.76-6.665l4.026-3.115A7.077 7.077 0 0 0 12 16.364Z"/></svg>') no-repeat center center;
+}
+
+.apple-icon {
+  background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23000000"><path d="M17.076 12.76c-.017-1.614.772-2.83 2.374-3.73-1.004-1.424-2.607-2.2-4.694-2.333-1.897-.127-3.933 1.074-4.697 1.074-.815 0-2.632-.999-4.06-.999C2.756 6.772 0 8.793 0 12.899c0 .966.182 1.96.543 2.981.482 1.36 2.22 4.68 4.026 4.63 1.075-.03 1.671-.774 3.215-.774 1.52 0 2.069.774 3.215.774 1.814.03 3.393-3.039 3.844-4.405-2.454-1.193-2.767-3.456-2.767-3.345zM14.14 4.282c.983-1.16 1.676-2.733 1.488-4.282-1.541.082-3.33 1.006-4.372 2.166-.91.997-1.745 2.583-1.528 4.076 1.675.12 3.44-.824 4.413-1.96z"/></svg>') no-repeat center center;
 }
