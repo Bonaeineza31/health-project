@@ -462,4 +462,256 @@ const DOCTORS = [
     const appointmentData = {
       doctorId: AppointmentState.selectedDoctor.id,
       date: AppointmentState.selectedDate,
-      time: AppointmentState.selectedTime
+      time: AppointmentState.selectedTime,
+      type: AppointmentState.appointmentType,
+      reason: reason
+    };
+    
+    // Simulate API call
+    bookAppointment(appointmentData);
+  }
+  
+  function bookAppointment(appointmentData) {
+    // Show loading state
+    const confirmBtn = document.getElementById('confirmAppointment');
+    if (confirmBtn) {
+      confirmBtn.disabled = true;
+      confirmBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Booking...';
+    }
+    
+    // In a real app, this would be an API call
+    // For demonstration, we'll use a timeout to simulate an API call
+    setTimeout(() => {
+      // Reset button
+      if (confirmBtn) {
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = 'Book Appointment';
+      }
+      
+      // Close modal
+      closeAppointmentModal();
+      
+      // Show success notification
+      window.Evruriro.showNotification('success', `Appointment with ${AppointmentState.selectedDoctor.name} booked successfully for ${formatAppointmentDateTime(appointmentData.date, appointmentData.time)}`);
+      
+      // Add to upcoming appointments
+      addToUpcomingAppointments(appointmentData);
+    }, 1500);
+  }
+  
+  function formatAppointmentDateTime(date, time) {
+    // Format date: Mar 25, 2025
+    const dateObj = new Date(date);
+    const formattedDate = dateObj.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+    
+    // Format time
+    const formattedTime = formatTime(time);
+    
+    return `${formattedDate} at ${formattedTime}`;
+  }
+  
+  function addToUpcomingAppointments(appointmentData) {
+    const upcomingAppointmentsContainer = document.getElementById('upcomingAppointments');
+    if (!upcomingAppointmentsContainer) return;
+    
+    // Find doctor info
+    const doctor = DOCTORS.find(d => d.id === appointmentData.doctorId);
+    if (!doctor) return;
+    
+    // Create appointment card
+    const appointmentCard = document.createElement('div');
+    appointmentCard.className = 'appointment-card';
+    
+    appointmentCard.innerHTML = `
+      <div class="appointment-date">${formatAppointmentDate(appointmentData.date)}</div>
+      <div class="appointment-doctor">${doctor.name}</div>
+      <div class="appointment-type">${appointmentData.type === 'in-person' ? 'In-Person Visit' : 'Virtual Visit'}</div>
+      <div class="appointment-time">${formatTime(appointmentData.time)}</div>
+    `;
+    
+    // Add to container (prepend to show newest first)
+    upcomingAppointmentsContainer.insertBefore(appointmentCard, upcomingAppointmentsContainer.firstChild);
+    
+    // Update counts
+    updateAppointmentCounts();
+  }
+  
+  function formatAppointmentDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  }
+  
+  function updateAppointmentCounts() {
+    // This would update any appointment counters in the UI
+    // For example, a badge showing the number of upcoming appointments
+    const appointmentCounters = document.querySelectorAll('.appointment-counter');
+    const count = document.querySelectorAll('.appointment-card').length;
+    
+    appointmentCounters.forEach(counter => {
+      counter.textContent = count;
+      
+      // Show/hide based on count
+      if (count > 0) {
+        counter.classList.add('show');
+      } else {
+        counter.classList.remove('show');
+      }
+    });
+  }
+  
+  // Favorites handling
+  function toggleFavoriteDoctor(doctorId) {
+    // Get current favorites from localStorage
+    const favorites = JSON.parse(localStorage.getItem('evruriDoctorFavorites') || '[]');
+    
+    // Check if doctor is already favorited
+    const index = favorites.indexOf(doctorId);
+    
+    if (index === -1) {
+      // Add to favorites
+      favorites.push(doctorId);
+      window.Evruriro.showNotification('success', 'Doctor added to favorites');
+    } else {
+      // Remove from favorites
+      favorites.splice(index, 1);
+      window.Evruriro.showNotification('success', 'Doctor removed from favorites');
+    }
+    
+    // Save updated favorites
+    localStorage.setItem('evruriDoctorFavorites', JSON.stringify(favorites));
+    
+    // Update UI
+    updateFavoriteIcons();
+  }
+  
+  function updateFavoriteIcons() {
+    // Get current favorites
+    const favorites = JSON.parse(localStorage.getItem('evruriDoctorFavorites') || '[]');
+    
+    // Update all favorite buttons
+    document.querySelectorAll('.favorite-btn').forEach(btn => {
+      const doctorId = parseInt(btn.dataset.doctorId);
+      const isFavorite = favorites.includes(doctorId);
+      
+      // Update icon
+      btn.innerHTML = isFavorite ? 
+        '<i class="fa fa-heart"></i>' : 
+        '<i class="fa fa-heart-o"></i>';
+      
+      // Update title
+      btn.title = isFavorite ? 'Remove from favorites' : 'Add to favorites';
+    });
+  }
+  
+  // Load favorite doctors
+  function loadFavoriteDoctors() {
+    const favorites = JSON.parse(localStorage.getItem('evruriDoctorFavorites') || '[]');
+    
+    if (favorites.length === 0) return;
+    
+    // Create a "Favorites" section if we're on the home page
+    const homepageContent = document.querySelector('.homepage-content');
+    if (!homepageContent) return;
+    
+    // Create favorites section
+    const favoritesSection = document.createElement('section');
+    favoritesSection.className = 'favorites-section';
+    favoritesSection.innerHTML = `
+      <h2>Your Favorite Providers</h2>
+      <div class="favorites-container"></div>
+    `;
+    
+    homepageContent.insertBefore(favoritesSection, homepageContent.firstChild);
+    
+    // Get container
+    const container = favoritesSection.querySelector('.favorites-container');
+    
+    // Add favorite doctors
+    favorites.forEach(doctorId => {
+      const doctor = DOCTORS.find(d => d.id === doctorId);
+      if (!doctor) return;
+      
+      const doctorCard = document.createElement('div');
+      doctorCard.className = 'doctor-card mini';
+      
+      doctorCard.innerHTML = `
+        <div class="doctor-image">
+          <img src="${doctor.image}" alt="${doctor.name}" onerror="this.src='images/default-doctor.png'">
+        </div>
+        <div class="doctor-info">
+          <h3 class="doctor-name">${doctor.name}</h3>
+          <p class="doctor-specialty">${doctor.specialty}</p>
+        </div>
+        <div class="doctor-actions">
+          <button class="btn outline schedule-mini-btn" data-doctor-id="${doctor.id}">
+            Schedule
+          </button>
+        </div>
+      `;
+      
+      container.appendChild(doctorCard);
+      
+      // Add event listener for schedule button
+      const scheduleBtn = doctorCard.querySelector('.schedule-mini-btn');
+      scheduleBtn.addEventListener('click', () => {
+        window.location.href = `appointments.html?doctor=${doctor.id}`;
+      });
+    });
+  }
+  
+  // Check for URL parameters when page loads
+  function checkUrlParameters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const doctorId = urlParams.get('doctor');
+    
+    if (doctorId) {
+      // Find the doctor
+      const doctor = DOCTORS.find(d => d.id === parseInt(doctorId));
+      if (doctor) {
+        // Open appointment modal for this doctor
+        setTimeout(() => {
+          openAppointmentModal(doctor);
+        }, 500);
+      }
+    }
+    
+    const specialty = urlParams.get('specialty');
+    if (specialty) {
+      // Set specialty filter
+      const specialtyFilter = document.getElementById('specialtyFilter');
+      if (specialtyFilter) {
+        specialtyFilter.value = specialty;
+        handleSpecialtyFilter({ target: specialtyFilter });
+      }
+    }
+    
+    const type = urlParams.get('type');
+    if (type && (type === 'in-person' || type === 'virtual')) {
+      // Set appointment type
+      document.querySelectorAll('.type-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.type === type) {
+          btn.classList.add('active');
+        }
+      });
+      
+      AppointmentState.appointmentType = type;
+      applyFilters();
+    }
+  }
+  
+  // Initialize everything when document is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    initializeAppointmentsPage();
+    setupEventListeners();
+    checkUrlParameters();
+    updateFavoriteIcons();
+  });
