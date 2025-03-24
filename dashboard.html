@@ -10,58 +10,55 @@
 </head>
 <body>
   <div class="app-container">
-    <!-- Include navbar -->
-    <div id="navbar-container"></div>
-        <!-- navbar.html -->
-<div class="navbar">
-  <div class="navbar-left">
-    <a href="dashboard.html" class="logo">
-      <img src="images/logo.svg" alt="Evruriro Logo" class="logo-img">
-      <span class="logo-text">Evuriro</span>
-    </a>
-  </div>
-  
-  <div class="navbar-center">
-    <div class="search-container">
-      <input type="text" class="search-input" placeholder="search">
-      <button class="search-button">
-        <i class="fa fa-search"></i>
-      </button>
+    <!-- Navbar directly included -->
+    <div class="navbar">
+      <div class="navbar-left">
+        <a href="dashboard.html" class="logo">
+          <img src="images/logo.svg" alt="Evruriro Logo" class="logo-img">
+          <span class="logo-text">Evruriro</span>
+        </a>
+      </div>
+      
+      <div class="navbar-center">
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="search">
+          <button class="search-button">
+            <i class="fa fa-search"></i>
+          </button>
+        </div>
+        
+        <div class="main-nav">
+          <a href="dashboard.html" class="nav-link active">Dashboard</a>
+          <a href="teleconsultation.html" class="nav-link">Teleconsultation</a>
+          <a href="records.html" class="nav-link">Records</a>
+          <a href="hospitals.html" class="nav-link">Nearby Hospitals</a>
+          <a href="doctors.html" class="nav-link">Find a Doctor</a>
+        </div>
+      </div>
+      
+      <div class="navbar-right">
+        <a href="#" class="icon-button">
+          <i class="fa fa-phone"></i>
+        </a>
+        <a href="#" class="icon-button">
+          <i class="fa fa-bell"></i>
+        </a>
+        <div class="user-profile">
+          <div class="profile-avatar">J</div>
+        </div>
+        <div class="language-selector">
+          <a href="#" class="active">EN</a>
+          <a href="#">FR</a>
+          <a href="#">KIN</a>
+        </div>
+      </div>
     </div>
-    
-    <div class="main-nav">
-      <a href="dashboard.html" class="nav-link">Dashboard</a>
-      <a href="teleconsultation.html" class="nav-link">Teleconsultation</a>
-      <a href="records.html" class="nav-link">Records</a>
-      <a href="hospitals.html" class="nav-link">Nearby Hospitals</a>
-      <a href="doctors.html" class="nav-link">Find a Doctor</a>
-    </div>
-  </div>
-  
-  <div class="navbar-right">
-    <a href="#" class="icon-button">
-      <i class="fa fa-phone"></i>
-    </a>
-    <a href="#" class="icon-button">
-      <i class="fa fa-bell"></i>
-    </a>
-    <div class="user-profile">
-      <div class="profile-avatar">J</div>
-    </div>
-    <div class="language-selector">
-      <a href="#" class="active">EN</a>
-      <a href="#">FR</a>
-      <a href="#">KIN</a>
-    </div>
-  </div>
-</div>
 
     <div class="content-container">
-      <!-- Include sidebar -->
-      <div id="sidebar-container"></div>
+      <!-- Sidebar directly included -->
       <div class="sidebar">
         <div class="sidebar-menu">
-          <a href="dashboard.html" class="menu-item">
+          <a href="dashboard.html" class="menu-item active">
             <i class="fa fa-th-large"></i>
             <span>Dashboard</span>
           </a>
@@ -108,7 +105,8 @@
             <span>Dark Mode</span>
           </div>
         </div>
-      </div> 
+      </div>
+      
       <main class="main-content">
         <div class="page-header">
           <h1>Welcome to Evruriro Health Dashboard</h1>
@@ -259,7 +257,7 @@
     </div>
   </div>
 
-  <script src="js/main.js"></script>
+  <script src="main.js"></script>
   <script src="dashboard.js"></script>
 </body>
 </html>
