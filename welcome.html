@@ -199,7 +199,7 @@ const response = await fetch(`${API_URL}/user/login`, {
             localStorage.setItem('userEmail', data.user.email);
         }
         alert('Login successful! Redirecting to dashboard...');
-        window.location.href = './dashboard.html';
+        window.location.href = 'http://54.197.202.33/dashboard.html';
     } catch (error) {
         console.error('Login error:', error);
         errorMessage.textContent = error.message || 'An error occurred during login. Please try again.';
