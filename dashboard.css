@@ -1,80 +1,260 @@
-/* Dashboard CSS for Evruriro Health Dashboard */
-
-/* General Styles */
-body {
+/* Main Layout Structure */
+:root {
+    --primary-color: #1a73e8;
+    --primary-light: #4285f4;
+    --secondary-color: #34a853;
+    --text-color: #3c4043;
+    --bg-color: #f1f3f4;
+    --shadow: 0 2px 5px rgba(0,0,0,0.1);
+    --transition: all 0.3s ease;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
-}
-
-.app-container {
-    padding: 20px;
-}
-
-/* Navbar Styles */
-.navbar {
+  }
+  
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  /* Navbar Styles */
+  .navbar {
     background-color: var(--primary-color);
     color: white;
-    padding: 15px 20px;
+    padding: 10px 20px;
     box-shadow: var(--shadow);
-}
-
-.nav-link {
-    color: white;
-    padding: 10px;
-    transition: var(--transition);
-}
-
-.nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Sidebar Styles */
-.sidebar {
-    background-color: #f8f9fa;
-    box-shadow: var(--shadow);
-    padding: 20px;
-}
-
-.menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  .navbar-left, .navbar-right {
     display: flex;
     align-items: center;
-    padding: 10px;
-    color: var(--text-color);
+  }
+  
+  .navbar-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
+  
+  .logo-img {
+    height: 30px;
+    margin-right: 10px;
+  }
+  
+  .search-container {
+    display: flex;
+    margin: 5px 0;
+  }
+  
+  .search-input {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px 0 0 20px;
+    width: 250px;
+  }
+  
+  .search-button {
+    background: white;
+    border: none;
+    border-radius: 0 20px 20px 0;
+    padding: 8px 15px;
+    cursor: pointer;
+  }
+  
+  .main-nav {
+    display: flex;
+    margin-top: 5px;
+  }
+  
+  .nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    margin: 0 5px;
+    border-radius: 4px;
     transition: var(--transition);
-}
-
-.menu-item:hover {
+  }
+  
+  .nav-link:hover, .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .icon-button {
+    color: white;
+    margin: 0 10px;
+    font-size: 1.2rem;
+  }
+  
+  .user-profile {
+    margin: 0 15px;
+  }
+  
+  .profile-avatar {
+    width: 35px;
+    height: 35px;
+    background-color: #fff;
+    color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+  
+  .language-selector {
+    display: flex;
+  }
+  
+  .language-selector a {
+    color: white;
+    padding: 5px 8px;
+    margin: 0 2px;
+    text-decoration: none;
+    border-radius: 4px;
+  }
+  
+  .language-selector a.active {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  /* Content Container with Sidebar and Main Content */
+  .content-container {
+    display: flex;
+    flex: 1;
+  }
+  
+  /* Sidebar Styles */
+  .sidebar {
+    width: 250px;
+    background-color: white;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(100vh - 60px);
+    position: sticky;
+    top: 60px;
+  }
+  
+  .sidebar-menu, .sidebar-footer {
+    padding: 15px;
+  }
+  
+  .menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    color: var(--text-color);
+    text-decoration: none;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    transition: var(--transition);
+  }
+  
+  .menu-item i {
+    margin-right: 15px;
+    width: 20px;
+    text-align: center;
+  }
+  
+  .menu-item:hover, .menu-item.active {
     background-color: rgba(26, 115, 232, 0.1);
-}
-
-/* Card Styles */
-.card {
+    color: var(--primary-color);
+  }
+  
+  .dark-mode-toggle {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .dark-mode-toggle i {
+    margin-right: 15px;
+  }
+  
+  /* Main Content Styles */
+  .main-content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .page-header {
+    margin-bottom: 20px;
+  }
+  
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  /* Card Styles */
+  .card {
     background: white;
     border-radius: 8px;
     box-shadow: var(--shadow);
-    margin-bottom: 20px;
     overflow: hidden;
-}
-
-.card-header {
-    background-color: var(--primary-light);
-    color: white;
-    padding: 15px;
-}
-
-.card-body {
-    padding: 20px;
-}
-
-/* Vital Item Styles */
-.vital-item {
+    margin-bottom: 20px;
+  }
+  
+  .card h2 {
+    padding: 15px 20px;
+    margin: 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+  }
+  
+  .card-header h2 {
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+  
+  /* Vitals Grid */
+  .vitals-grid {
+    padding: 15px 20px;
+  }
+  
+  .vital-item {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
-}
-
-.vital-icon {
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+  }
+  
+  .vital-icon {
     width: 40px;
     height: 40px;
     display: flex;
@@ -82,49 +262,224 @@ body {
     justify-content: center;
     border-radius: 50%;
     color: white;
-    font-size: 1.5rem;
-}
-
-.heart-icon { background-color: #ff4757; }
-.bp-icon { background-color: #2e86de; }
-.temp-icon { background-color: #ff6b6b; }
-.oxygen-icon { background-color: #54a0ff; }
-.weight-icon { background-color: #5f27cd; }
-
-/* Button Styles */
-.btn {
+    font-size: 1.2rem;
+    margin-right: 15px;
+  }
+  
+  .vital-info {
+    flex: 1;
+  }
+  
+  .vital-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #70757a;
+  }
+  
+  .vital-value {
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+  
+  .vital-status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  
+  .vital-status.normal {
+    background-color: var(--secondary-color);
+  }
+  
+  .heart-icon { background-color: #ff4757; }
+  .bp-icon { background-color: #2e86de; }
+  .temp-icon { background-color: #ff6b6b; }
+  .oxygen-icon { background-color: #54a0ff; }
+  .weight-icon { background-color: #5f27cd; }
+  
+  /* Vital Actions */
+  .vital-actions {
+    padding: 0 20px 15px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .btn {
     padding: 10px 15px;
     border-radius: 4px;
     border: none;
-    color: white;
     cursor: pointer;
     transition: var(--transition);
-}
-
-.btn-primary {
+    font-weight: 500;
+  }
+  
+  .primary {
     background-color: var(--primary-color);
-}
-
-.btn-secondary {
-    background-color: var(--secondary-color);
-}
-
-.btn:hover {
+    color: white;
+  }
+  
+  .secondary {
+    background-color: #f1f3f4;
+    color: var(--text-color);
+    border: 1px solid #dadce0;
+  }
+  
+  .btn:hover {
     opacity: 0.9;
-}
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
+  }
+  
+  /* Chart Tabs */
+  .vitals-chart {
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+  }
+  
+  .chart-tabs {
+    display: flex;
+    margin-bottom: 15px;
+  }
+  
+  .chart-tab {
+    padding: 8px 15px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+  }
+  
+  .chart-tab.active {
+    border-bottom-color: var(--primary-color);
+    color: var(--primary-color);
+    font-weight: 500;
+  }
+  
+  .chart-container {
+    height: 200px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #70757a;
+  }
+  
+  /* View Tabs */
+  .view-tabs {
+    display: flex;
+  }
+  
+  .view-tab {
+    padding: 5px 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-left: 5px;
+  }
+  
+  .view-tab.active {
+    background-color: rgba(26, 115, 232, 0.1);
+    color: var(--primary-color);
+  }
+  
+  /* Appointments List */
+  .appointments-list {
+    padding: 15px 20px;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #70757a;
+  }
+  
+  /* Quick Actions */
+  .actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 15px 20px;
+  }
+  
+  .action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-color);
+    transition: var(--transition);
+  }
+  
+  .action-item:hover {
+    background-color: rgba(26, 115, 232, 0.1);
+  }
+  
+  .action-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    box-shadow: var(--shadow);
+  }
+  
+  /* Recent Activity */
+  .activity-list {
+    padding: 15px 20px;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #70757a;
+  }
+  
+  .view-all {
+    color: var(--primary-color);
+    text-decoration: none;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .navbar-center {
+      display: none;
     }
-
+    
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .content-container {
+      flex-direction: column;
+    }
+    
     .sidebar {
-        width: 100%;
-        position: relative;
+      width: 100%;
+      height: auto;
+      position: static;
     }
-
-    .main-content {
-        margin-left: 0;
+    
+    .sidebar-menu {
+      display: flex;
+      overflow-x: auto;
+      padding: 10px;
     }
-}
+    
+    .sidebar-footer {
+      display: none;
+    }
+    
+    .menu-item {
+      margin-right: 10px;
+      margin-bottom: 0;
+      white-space: nowrap;
+    }
+  }
