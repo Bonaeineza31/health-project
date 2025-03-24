@@ -152,7 +152,7 @@ function loginAsGuest() {
     // Set a flag in localStorage to indicate this is a guest session
     localStorage.setItem('guestMode', 'true');
     // Redirect to dashboard
-    window.location.href = `${baseUrl}/dashboard.html`;;
+   window.location.href = '/dashboard.html';
 }
 
 async function handleSignIn(event) {
@@ -200,7 +200,7 @@ const response = await fetch(`${API_URL}/user/login`, {
             localStorage.setItem('userEmail', data.user.email);
         }
         alert('Login successful! Redirecting to dashboard...');
-         window.location.href = `${baseUrl}/dashboard.html`;;
+        window.location.href = '/dashboard.html';
     } catch (error) {
         console.error('Login error:', error);
         errorMessage.textContent = error.message || 'An error occurred during login. Please try again.';
@@ -257,7 +257,7 @@ async function handleSignUp(event) {
         // Handle successful registration
         localStorage.setItem('token', data.token);
         alert('Registration successful! Redirecting to dashboard...');
-      window.location.href = `${baseUrl}/dashboard.html`;;
+     window.location.href = '/dashboard.html';
     } catch (error) {
         console.error('Registration error:', error);
         errorMessage.textContent = error.message || 'An error occurred during registration. Please try again.';
