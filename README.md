@@ -67,7 +67,7 @@ The load balancer distributes incoming traffic across both web servers, ensuring
   **Web Server 01**: http://54.197.202.33/
 - **Web Server 02**: http://3.93.231.111/
 - **Load Balancer**: http://44.201.230.25/
-
+**Be aware** the above sites are not secured to access our load balancer as it was linked with a Domain access it through  	www.bonaeineza31.tech
 
 ## Key Features
 
