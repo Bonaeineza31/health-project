@@ -1,43 +1,62 @@
-<!-- navbar.html -->
-<div class="navbar">
-    <div class="navbar-left">
-      <a href="dashboard.html" class="logo">
-        <img src="images/logo.svg" alt="Evruriro Logo" class="logo-img">
-        <span class="logo-text">Evruriro</span>
-      </a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar - Evuriro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="navbar.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="navbar-left">
+            <a href="dashboard.html" class="logo">
+                <img src="/images/logo.svg" alt="Evuriro Logo" class="logo-img" onerror="this.style.display='none'">
+                <span class="logo-text">Evuriro</span>
+            </a>
+        </div>
+
+        <div class="navbar-center">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search">
+                <button class="search-button">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+
+            <div class="main-nav">
+                <a href="dashboard.html" class="nav-link active">Dashboard</a>
+                <a href="teleconsultation.html" class="nav-link">Teleconsultation</a>
+                <a href="records.html" class="nav-link">Records</a>
+                <a href="hospitals.html" class="nav-link">Nearby Hospitals</a>
+                <a href="devices.html" class="nav-link">Connect Device</a>
+            </div>
+        </div>
+
+        <div class="navbar-right">
+            <a href="#" class="icon-button">
+                <i class="fa fa-phone"></i>
+            </a>
+            <a href="#" class="icon-button">
+                <i class="fa fa-bell"></i>
+            </a>
+            <div class="dropdown">
+                <div class="profile-avatar" id="profileDropdown">J</div>
+                <div class="dropdown-content" id="profileMenu">
+                    <a href="profile.html">My Profile</a>
+                    <a href="settings.html">Settings</a>
+                    <a href="welcome.html">Logout</a>
+                </div>
+            </div>
+            <div class="language-selector">
+                <a href="#" class="active" data-lang="en">EN</a>
+                <a href="#" data-lang="fr">FR</a>
+                <a href="#" data-lang="kin">KIN</a>
+            </div>
+        </div>
     </div>
-    
-    <div class="navbar-center">
-      <div class="search-container">
-        <input type="text" class="search-input" placeholder="search">
-        <button class="search-button">
-          <i class="fa fa-search"></i>
-        </button>
-      </div>
-      
-      <div class="main-nav">
-        <a href="dashboard.html" class="nav-link">Dashboard</a>
-        <a href="teleconsultation.html" class="nav-link">Teleconsultation</a>
-        <a href="records.html" class="nav-link">Records</a>
-        <a href="hospitals.html" class="nav-link">Nearby Hospitals</a>
-        <a href="doctors.html" class="nav-link">Find a Doctor</a>
-      </div>
-    </div>
-    
-    <div class="navbar-right">
-      <a href="#" class="icon-button">
-        <i class="fa fa-phone"></i>
-      </a>
-      <a href="#" class="icon-button">
-        <i class="fa fa-bell"></i>
-      </a>
-      <div class="user-profile">
-        <div class="profile-avatar">J</div>
-      </div>
-      <div class="language-selector">
-        <a href="#" class="active">EN</a>
-        <a href="#">FR</a>
-        <a href="#">KIN</a>
-      </div>
-    </div>
-  </div>
+
+    <script src="navbar.js"></script>
+</body>
+</html>

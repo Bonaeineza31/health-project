@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evuriro Health Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- Use absolute paths for CSS files -->
+  <link rel="stylesheet" href="/main.css">
+  <link rel="stylesheet" href="/dashboard.css">
+  <!-- Inline CSS as a fallback in case external CSS fails to load -->
+  <style>
+    /* Basic fallback styles */
+    body {
+      font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f1f3f4;
+      color: #3c4043;
+    }
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .navbar {
+      background-color: #1a73e8;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .content-container {
+      display: flex;
+      flex: 1;
+    }
+    .sidebar {
+      width: 250px;
+      background-color: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      height: calc(100vh - 60px);
+      position: sticky;
+      top: 60px;
+    }
+    .main-content {
+      flex: 1;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      padding: 20px;
+    }
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .vital-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: #f8f9fa;
+    }
+    .btn {
+      padding: 10px 15px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .primary {
+      background-color: #1a73e8;
+      color: white;
+    }
+    .secondary {
+      background-color: #f1f3f4;
+      color: #3c4043;
+      border: 1px solid #dadce0;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Navbar -->
+    <div class="navbar">
+      <div class="navbar-left">
+        <a href="dashboard.html" class="logo">
+          <img src="/images/logo.svg" alt="Evruriro Logo" class="logo-img" onerror="this.style.display='none'">
+          <span class="logo-text">Evuriro</span>
+        </a>
+      </div>
+      
+      <div class="navbar-center">
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="search">
+          <button class="search-button">
+            <i class="fa fa-search"></i>
+          </button>
+        </div>
+        
+        <div class="main-nav">
+          <a href="/dashboard.html" class="nav-link active">Dashboard</a>
+          <a href="/teleconsultation.html" class="nav-link">Teleconsultation</a>
+          <a href="/records.html" class="nav-link">Records</a>
+          <a href="/hospitals.html" class="nav-link">Nearby Hospitals</a>
+          <a href="/doctors.html" class="nav-link">Find a Doctor</a>
+        </div>
+      </div>
+      
+      <div class="navbar-right">
+        <a href="#" class="icon-button">
+          <i class="fa fa-phone"></i>
+        </a>
+        <a href="#" class="icon-button">
+          <i class="fa fa-bell"></i>
+        </a>
+        <div class="user-profile">
+          <div class="profile-avatar">J</div>
+        </div>
+        <div class="language-selector">
+          <a href="#" class="active">EN</a>
+          <a href="#">FR</a>
+          <a href="#">KIN</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-menu">
+          <a href="/dashboard.html" class="menu-item active">
+            <i class="fa fa-th-large"></i>
+            <span>Dashboard</span>
+          </a>
+          
+          <a href="/appointments.html" class="menu-item">
+            <i class="fa fa-calendar"></i>
+            <span>Appointments</span>
+          </a>
+          
+          <a href="/teleconsultation.html" class="menu-item">
+            <i class="fa fa-video-camera"></i>
+            <span>Teleconsultation</span>
+          </a>
+          
+          <a href="/records.html" class="menu-item">
+            <i class="fa fa-file-text"></i>
+            <span>Medical Records</span>
+          </a>
+          
+          <a href="/hospitals.html" class="menu-item">
+            <i class="fa fa-hospital-o"></i>
+            <span>Nearby Hospitals</span>
+          </a>
+          
+          <a href="/devices.html" class="menu-item">
+            <i class="fa fa-plug"></i>
+            <span>Connect Device</span>
+          </a>
+        </div>
+        
+        <div class="sidebar-footer">
+          <a href="/settings.html" class="menu-item">
+            <i class="fa fa-cog"></i>
+            <span>Settings</span>
+          </a>
+          
+          <a href="/help.html" class="menu-item">
+            <i class="fa fa-question-circle"></i>
+            <span>Help Center</span>
+          </a>
+          
+          <div class="dark-mode-toggle">
+            <i class="fa fa-moon-o"></i>
+            <span>Dark Mode</span>
+          </div>
+        </div>
+      </div>
+      
+      <main class="main-content">
+        <div class="page-header">
+          <h1>Welcome to Evuriro Health Dashboard</h1>
+        </div>
+        
+        <div class="dashboard-grid">
+          <!-- Health Summary Section -->
+          <div class="card health-summary">
+            <h2>Health Summary</h2>
+            <div class="vitals-grid">
+              <div class="vital-item">
+                <div class="vital-icon heart-icon">
+                  <i class="fa fa-heart"></i>
+                </div>
+                <div class="vital-info">
+                  <span class="vital-label">Heart Rate</span>
+                  <span class="vital-value" id="heartRate">-- bpm</span>
+                </div>
+                <div class="vital-status normal"></div>
+              </div>
+              
+              <div class="vital-item">
+                <div class="vital-icon bp-icon">
+                  <i class="fa fa-tachometer"></i>
+                </div>
+                <div class="vital-info">
+                  <span class="vital-label">Blood Pressure</span>
+                  <span class="vital-value" id="bloodPressure">--/-- mmHg</span>
+                </div>
+                <div class="vital-status normal"></div>
+              </div>
+              
+              <div class="vital-item">
+                <div class="vital-icon temp-icon">
+                  <i class="fa fa-thermometer-half"></i>
+                </div>
+                <div class="vital-info">
+                  <span class="vital-label">Temperature</span>
+                  <span class="vital-value" id="temperature">--.-- °C</span>
+                </div>
+                <div class="vital-status normal"></div>
+              </div>
+              
+              <div class="vital-item">
+                <div class="vital-icon oxygen-icon">
+                  <i class="fa fa-medkit"></i>
+                </div>
+                <div class="vital-info">
+                  <span class="vital-label">Oxygen Level</span>
+                  <span class="vital-value" id="oxygenLevel">---%</span>
+                </div>
+                <div class="vital-status normal"></div>
+              </div>
+              
+              <div class="vital-item">
+                <div class="vital-icon weight-icon">
+                  <i class="fa fa-balance-scale"></i>
+                </div>
+                <div class="vital-info">
+                  <span class="vital-label">Weight</span>
+                  <span class="vital-value" id="weight">--.-- kg</span>
+                </div>
+                <div class="vital-status normal"></div>
+              </div>
+            </div>
+            
+            <div class="vital-actions">
+              <button class="btn primary" id="updateVitals">Update Vitals</button>
+              <button class="btn secondary" id="connectDevice">Connect Device</button>
+            </div>
+            
+            <div class="vitals-chart">
+              <h3>History</h3>
+              <div class="chart-tabs">
+                <button class="chart-tab active">Week</button>
+                <button class="chart-tab">Month</button>
+                <button class="chart-tab">Year</button>
+              </div>
+              <div class="chart-container" id="vitalsChart">
+                <!-- Chart will be rendered by JavaScript -->
+                <div style="text-align: center; padding: 40px; color: #70757a;">Chart data will display here</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Appointments Section -->
+          <div class="card appointments">
+            <div class="card-header">
+              <h2>Upcoming Appointments</h2>
+              <div class="view-tabs">
+                <button class="view-tab active">Upcoming</button>
+                <button class="view-tab">Past</button>
+                <button class="view-tab">View All</button>
+              </div>
+            </div>
+            
+            <div class="appointments-list" id="appointmentsList">
+              <!-- Will be populated by JavaScript -->
+              <div style="text-align: center; padding: 40px; color: #70757a;">Loading appointments...</div>
+            </div>
+          </div>
+          
+          <!-- Quick Actions Section -->
+          <div class="card quick-actions">
+            <h2>Quick Actions</h2>
+            <div class="actions-grid">
+              <a href="/appointments.html" class="action-item">
+                <div class="action-icon">
+                  <i class="fa fa-calendar-plus-o"></i>
+                </div>
+                <span>Schedule Appointment</span>
+              </a>
+              
+              <a href="/teleconsultation.html" class="action-item">
+                <div class="action-icon">
+                  <i class="fa fa-video-camera"></i>
+                </div>
+                <span>Start Teleconsultation</span>
+              </a>
+              
+              <a href="/records.html" class="action-item">
+                <div class="action-icon">
+                  <i class="fa fa-upload"></i>
+                </div>
+                <span>Upload Records</span>
+              </a>
+              
+              <a href="/hospitals.html" class="action-item">
+                <div class="action-icon">
+                  <i class="fa fa-hospital-o"></i>
+                </div>
+                <span>Find Hospital</span>
+              </a>
+            </div>
+          </div>
+          
+          <!-- Recent Activity Section -->
+          <div class="card recent-activity">
+            <div class="card-header">
+              <h2>Recent Activity</h2>
+              <a href="#" class="view-all">View All</a>
+            </div>
+            
+            <div class="activity-list" id="activityList">
+              <!-- Will be populated by JavaScript -->
+              <div style="text-align: center; padding: 40px; color: #70757a;">Loading activity...</div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add inline JavaScript to ensure basic functionality -->
+  <script>
+    // Sample data for demonstration
+    const vitalData = {
+      heartRate: '72 bpm',
+      bloodPressure: '120/80 mmHg',
+      temperature: '36.6 °C',
+      oxygenLevel: '98%',
+      weight: '70.5 kg'
+    };
+
+    const appointmentsData = [
+      {
+        id: 1,
+        doctor: 'Dr. Sarah Johnson',
+        specialty: 'Cardiology',
+        date: '2025-03-26T09:30:00',
+        type: 'Check-up',
+        status: 'confirmed'
+      },
+      {
+        id: 2,
+        doctor: 'Dr. Michael Chen',
+        specialty: 'Dermatology',
+        date: '2025-04-02T14:15:00',
+        type: 'Consultation',
+        status: 'pending'
+      }
+    ];
+
+    const activityData = [
+      {
+        type: 'appointment',
+        title: 'Appointment scheduled',
+        description: 'with Dr. Sarah Johnson on March 26, 2025',
+        timestamp: '2025-03-24T10:30:00'
+      },
+      {
+        type: 'prescription',
+        title: 'New prescription',
+        description: 'Amoxicillin 500mg, twice daily for 7 days',
+        timestamp: '2025-03-23T15:45:00'
+      },
+      {
+        type: 'test',
+        title: 'Test results available',
+        description: 'Blood work results from St. Mary Hospital',
+        timestamp: '2025-03-22T09:15:00'
+      }
+    ];
+
+    // Initialize the dashboard
+    document.addEventListener('DOMContentLoaded', function() {
+      // Update vitals
+      updateVitalsDisplay();
+      
+      // Load appointments
+      loadAppointments();
+      
+      // Load activity
+      loadActivity();
+      
+      // Add event listeners
+      document.getElementById('updateVitals').addEventListener('click', updateVitalsDisplay);
+      document.getElementById('connectDevice').addEventListener('click', connectDeviceHandler);
+      
+      // Initialize tabs
+      initializeTabs();
+    });
+
+    // Update vitals display
+    function updateVitalsDisplay() {
+      document.getElementById('heartRate').textContent = vitalData.heartRate;
+      document.getElementById('bloodPressure').textContent = vitalData.bloodPressure;
+      document.getElementById('temperature').textContent = vitalData.temperature;
+      document.getElementById('oxygenLevel').textContent = vitalData.oxygenLevel;
+      document.getElementById('weight').textContent = vitalData.weight;
+    }
+
+    // Handle connect device button
+    function connectDeviceHandler() {
+      alert('Connecting to health monitoring device...');
+      // In a real application, this would open a dialog to pair with a device
+    }
+
+    // Load appointments
+    function loadAppointments() {
+      const appointmentsList = document.getElementById('appointmentsList');
+      
+      if (appointmentsData.length === 0) {
+        appointmentsList.innerHTML = '<div class="empty-state">No upcoming appointments</div>';
+        return;
+      }
+      
+      let appointmentsHTML = '';
+      
+      appointmentsData.forEach(appointment => {
+        const date = new Date(appointment.date);
+        const formattedDate = date.toLocaleDateString('en-US', { 
+          weekday: 'short', 
+          month: 'short', 
+          day: 'numeric' 
+        });
+        const formattedTime = date.toLocaleTimeString('en-US', { 
+          hour: '2-digit', 
+          minute: '2-digit'
+        });
+        
+        appointmentsHTML += `
+          <div class="appointment-item">
+            <div class="appointment-date">
+              <div class="date">${formattedDate}</div>
+              <div class="time">${formattedTime}</div>
+            </div>
+            <div class="appointment-details">
+              <div class="doctor-name">${appointment.doctor}</div>
+              <div class="appointment-type">${appointment.type} | ${appointment.specialty}</div>
+            </div>
+            <div class="appointment-status ${appointment.status}">
+              ${appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+            </div>
+            <div class="appointment-actions">
+              <button class="btn secondary">Reschedule</button>
+              <button class="btn primary">Join</button>
+            </div>
+          </div>
+        `;
+      });
+      
+      appointmentsList.innerHTML = appointmentsHTML;
+    }
+
+    // Load activity
+    function loadActivity() {
+      const activityList = document.getElementById('activityList');
+      
+      if (activityData.length === 0) {
+        activityList.innerHTML = '<div class="empty-state">No recent activity</div>';
+        return;
+      }
+      
+      let activityHTML = '';
+      
+      activityData.forEach(activity => {
+        const date = new Date(activity.timestamp);
+        const formattedDate = date.toLocaleDateString('en-US', { 
+          month: 'short', 
+          day: 'numeric' 
+        });
+        const formattedTime = date.toLocaleTimeString('en-US', { 
+          hour: '2-digit', 
+          minute: '2-digit'
+        });
+        
+        activityHTML += `
+          <div class="activity-item">
+            <div class="activity-icon ${activity.type}-icon">
+              <i class="fa fa-${activity.type === 'appointment' ? 'calendar' : 
+                             activity.type === 'prescription' ? 'medkit' : 'file-text'}"></i>
+            </div>
+            <div class="activity-content">
+              <div class="activity-title">${activity.title}</div>
+              <div class="activity-description">${activity.description}</div>
+            </div>
+            <div class="activity-time">
+              ${formattedDate}, ${formattedTime}
+            </div>
+          </div>
+        `;
+      });
+      
+      activityList.innerHTML = activityHTML;
+    }
+
+    // Initialize tabs
+    function initializeTabs() {
+      // Chart tabs
+      const chartTabs = document.querySelectorAll('.chart-tab');
+      chartTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          chartTabs.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+      
+      // View tabs
+      const viewTabs = document.querySelectorAll('.view-tab');
+      viewTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          viewTabs.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+    }
+  </script>
+</body>
+</html>
