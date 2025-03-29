@@ -1,10 +1,10 @@
-##### Evuriro Healthcare Platform
-### Project Overview
+## Evuriro Healthcare Platform
+# Project Overview
 
 Evuriro is a comprehensive healthcare platform designed to help patients in Rwanda manage their health data, medical appointments, and connect with healthcare providers through seamless API integration. The platform aims to improve healthcare accessibility and patient outcomes through digital solutions.
-###### Demo Video: Watch the Evuriro Platform Demo here (https://youtu.be/wrO2PrEY0Ls)
+## Demo Video: Watch the Evuriro Platform Demo here (https://youtu.be/wrO2PrEY0Ls)
 
-### Key Features
+## Key Features
 
 User Authentication: Secure login/signup system with JWT token-based authentication
 Patient Dashboard: Real-time health metrics visualization and monitoring
@@ -14,37 +14,37 @@ Teleconsultation: Virtual meetings with healthcare providers
 Hospital Locator: Find and get directions to nearby healthcare facilities
 Device Integration: Connect with medical devices to monitor vital signs
 
-#### Technologies Used
-### Frontend
+## Technologies Used
+# Frontend
 
 HTML/CSS: Modern, responsive UI components
 JavaScript: Dynamic client-side functionality
 
-### Backend
+# Backend
 
 Node.js: JavaScript runtime for server-side logic
 Express.js: Web application framework for API endpoints
 MongoDB: NoSQL database for flexible data storage
 JWT: JSON Web Tokens for secure authentication
 
-### DevOps
+# DevOps
 
 Git: Version control system
 GitHub: Code repository and collaboration
 Render.com: Backend API hosting
 AWS EC2: Web server hosting
 
-### API Integration
+## API Integration
 The platform integrates with a custom-built RESTful API hosted at https://evuriro-backend.onrender.com that provides the following endpoints:
 
-## Authentication
+# Authentication 
 
 POST /user/register: Create new user accounts
 POST /user/login: Authenticate existing users
 GET /user/profile: Retrieve user profile information
 
 
-## Appointments
+# Appointments
 
 GET /appointments: Retrieve user appointments
 POST /appointments: Create new appointments
@@ -53,7 +53,7 @@ DELETE /appointments/:id: Cancel appointments
 
 
 
-### External APIs Used
+## External APIs Used
 This project integrates with the following third-party APIs:
 
 
@@ -100,7 +100,7 @@ Git
 MongoDB 
 
 
-#### Installation Steps
+# Installation Steps
 bashCopy# Clone the repository
 git clone https://github.com/Bonaeineza31/health-project.git
 
@@ -229,25 +229,10 @@ Health checks to ensure requests are only routed to operational servers
 Session persistence to maintain user sessions
 Error handling for failed upstream servers
 
-### User Interaction with Data
+## User Interaction with Data
 The platform provides several ways for users to interact with their health data:
-1. Filtering
-Users can filter appointments and medical records through multiple criteria:
 
-Date range (e.g., "Last 30 days", "Last 3 months", "Custom range")
-Doctor/Provider name
-Status (Upcoming, Completed, Cancelled)
-Type of visit (Regular checkup, Specialist, Emergency)
-
-2. Sorting
-Medical records can be sorted by:
-
-Date (newest to oldest or oldest to newest)
-Type of record (Lab results, Prescriptions, Diagnoses)
-Healthcare provider (alphabetically)
-Urgency level (Normal, Important, Critical)
-
-3. Searching
+1. Searching
 Global search functionality allows users to search across all patient data with:
 
 Keyword-based search across all medical records
@@ -255,23 +240,15 @@ Advanced search with multiple parameters
 Autocomplete suggestions for medical terms
 Results grouped by category (Appointments, Records, Medications)
 
-4. Visualization
+2. Visualization
 Interactive charts for vital signs and health metrics:
 
 Line charts for tracking trends over time (blood pressure, weight, etc.)
-Bar charts for comparing lab results against normal ranges
-Pie charts for medication adherence and appointment attendance
 Downloadable reports in PDF format
+Printing records
 
-5. Export and Sharing
-
-Export medical records in PDF format for personal records
-Secure sharing mechanism with healthcare providers via one-time access links
-Integration with email for sending appointment reminders and health reports
-QR code generation for quick access to specific records
-
-#### Challenges and Solutions
-### Challenge 1: Cross-Origin Resource Sharing (CORS)
+## Challenges and Solutions
+# Challenge 1: Cross-Origin Resource Sharing (CORS)
 Problem: API requests from the frontend were blocked by CORS policies when deployed to different domains.
 Solution:
 
@@ -285,7 +262,7 @@ javascriptCopyapp.use(cors({
 }));
 
 
-### Challenge 2: User Authentication
+# Challenge 2: User Authentication
 Problem: Needed a secure, stateless authentication system that works across multiple servers.
 Solution:
 
@@ -294,7 +271,7 @@ Stored tokens in HTTP-only cookies to prevent XSS attacks
 Added token expiration and refresh functionality
 Implemented secure password hashing with bcrypt
 
-### Challenge 3: Load Balancing
+# Challenge 3: Load Balancing
 Problem: Ensuring high availability and consistent user experience across multiple servers.
 Solution:
 
@@ -303,12 +280,12 @@ Implemented session persistence using IP hashing
 Set up automatic failover to handle server outages
 Added monitoring to track server performance and load distribution
 
-### Testing
+# Testing
 The application has been thoroughly tested using:
 
 Cross-Browser Testing: Verified functionality in Chrome, Firefox, Safari, and Edge
 
-#### Future Improvements
+## Future Improvements
 
 Progressive Web App (PWA): Enable offline functionality and push notifications
 AI-Powered Diagnostics: Implement machine learning for preliminary symptom analysis
@@ -318,22 +295,22 @@ Mobile Applications: Develop native iOS and Android applications
 Multi-language Support: Add support for Kinyarwanda and French
 Accessibility Enhancements: Improve compliance with WCAG guidelines
 
-#### Live Servers
+## Live Servers
 
 Web Server 01: http://54.197.202.33/
 Web Server 02: http://3.93.231.111/
 Load Balancer: http://44.201.230.25/
 Domain Access: www.bonaeineza31.tech
 
-##### User Guide
-### How to Register
+## User Guide
+# How to Register
 
 Navigate to the signup page
 Enter your personal information
 Verify your email address
 Complete your health profile
 
-##### How to Book an Appointment
+# How to Book an Appointment
 
 Log in to your account
 Navigate to the Appointments section
@@ -341,21 +318,22 @@ Select "Book New Appointment" with the doctor you prefer
 Choose your preferred doctor, date, and time
 Confirm your booking
 
-#### How to View Medical Records
+# How to View Medical Records
 
 Navigate to the Medical Records section
 Use filters to find specific records
 Click on a record to view details
 Export or share as needed
 
-##### Contributors
+## Contributors
 
 Ineza Gisubio Bonae - Lead Developer
 
-###### License
+##  License
 This project is licensed under the MIT License
-Acknowledgements
-###### Special thanks to:
+
+## Acknowledgements
+Special thanks to:
 
 Google Maps Platform for location services
 MongoDB Atlas for database hosting
