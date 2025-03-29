@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nearby Hospitals - Evuriro</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="navbar.css">
+  <link rel="stylesheet" href="sidebar.css">
+  <link rel="stylesheet" href="hospitals.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Include Navbar -->
+    <div id="navbar-container"></div>
+
+    <div class="content-container">
+      <!-- Include Sidebar -->
+      <div id="sidebar-container"></div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="nearby-hospitals-container">
+          <div class="nearby-hospitals-header">
+            <h1>Nearby Hospitals</h1>
+            <p>Find healthcare facilities close to your location in Rwanda</p>
+          </div>
+
+          <div class="location-permission-container" id="location-container">
+            <div class="location-request" id="location-request">
+              <p>To find hospitals near you, we need your location permission</p>
+              <button class="primary-button" id="share-location-btn">
+                Share My Location
+              </button>
+            </div>
+
+            <div class="location-loading" id="location-loading" style="display: none;">
+              <p>Getting your location...</p>
+            </div>
+
+            <div class="location-denied" id="location-denied" style="display: none;">
+              <p>Location access was denied. Results may not be accurate to your location.</p>
+              <button class="secondary-button" id="try-again-btn">
+                Try Again
+              </button>
+            </div>
+          </div>
+
+          <div class="search-filter-container">
+            <div class="search-box">
+              <input
+                type="text"
+                placeholder="Search for hospitals, addresses, or specialties"
+                id="hospital-search"
+              />
+              <button class="search-button" id="search-btn">
+                <i class="material-icons">search</i>
+              </button>
+            </div>
+
+            <div class="filter-options">
+              <div class="filter-item">
+                <label>Distance (km):</label>
+                <select id="distance-filter">
+                  <option value="5">5 km</option>
+                  <option value="10" selected>10 km</option>
+                  <option value="20">20 km</option>
+                  <option value="50">50 km</option>
+                </select>
+              </div>
+
+              <div class="filter-item">
+                <label>Specialty:</label>
+                <select id="specialty-filter">
+                  <option value="all">All Specialties</option>
+                  <option value="emergency">Emergency</option>
+                  <option value="cardiology">Cardiology</option>
+                  <option value="pediatrics">Pediatrics</option>
+                  <option value="orthopedics">Orthopedics</option>
+                  <option value="neurology">Neurology</option>
+                  <option value="oncology">Oncology</option>
+                  <option value="surgery">Surgery</option>
+                  <option value="internal medicine">Internal Medicine</option>
+                  <option value="obstetrics">Obstetrics</option>
+                  <option value="gynecology">Gynecology</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="hospitals-list" id="hospitals-list">
+            <!-- Hospital cards will be loaded here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="navbar.js"></script>
+  <script src="sidebar.js"></script>
+  <script src="hospitals.js"></script>
+</body>
+</html>
