@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medical Records - Evuriro</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="navbar.css">
+  <link rel="stylesheet" href="sidebar.css">
+  <link rel="stylesheet" href="records.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Include Navbar -->
+    <div id="navbar-container"></div>
+
+    <div class="content-container">
+      <!-- Include Sidebar -->
+      <div id="sidebar-container"></div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="med-records-container">
+          <div class="med-records-header">
+            <h1>Medical Records</h1>
+            <div class="med-search-container">
+              <input
+                type="text"
+                placeholder="Search your records..."
+                class="med-search-input"
+                id="recordSearchInput"
+              />
+              <button class="med-search-btn" id="recordSearchBtn">
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="med-tabs">
+            <button
+              class="med-tab med-active"
+              id="recentTab"
+            >
+              Recent
+            </button>
+            <button
+              class="med-tab"
+              id="labResultsTab"
+            >
+              Lab Results
+            </button>
+            <button
+              class="med-tab"
+              id="medicationsTab"
+            >
+              Medications
+            </button>
+            <button
+              class="med-tab"
+              id="diagnosesTab"
+            >
+              Diagnoses
+            </button>
+            <button
+              class="med-tab"
+              id="visitsTab"
+            >
+              Visits
+            </button>
+          </div>
+
+          <div class="med-records-summary">
+            <div class="med-summary-card">
+              <h3>3</h3>
+              <p>Active Medications</p>
+            </div>
+            <div class="med-summary-card">
+              <h3>3</h3>
+              <p>Recent Lab Results</p>
+            </div>
+            <div class="med-summary-card">
+              <h3>3</h3>
+              <p>Active Conditions</p>
+            </div>
+            <div class="med-summary-card med-alert">
+              <h3>1</h3>
+              <p>Upcoming Appointment</p>
+            </div>
+          </div>
+
+          <div class="med-content">
+            <!-- Recent Records Tab Content -->
+            <div id="recentContent" class="med-records-list">
+              <div class="med-record-card med-urgent">
+                <div class="med-record-header">
+                  <h3>Diagnosis</h3>
+                  <span class="med-status active">Active</span>
+                </div>
+                <p class="med-record-date">February 15, 2025</p>
+                <p class="med-record-doctor">Dr. Mugabo Jean</p>
+                <p class="med-record-description">Hypertension - Stage 1</p>
+                <div class="med-record-actions">
+                  <button
+                    class="med-btn-view"
+                    data-id="3"
+                    data-type="diagnosis"
+                  >
+                    View Details
+                  </button>
+                  <button
+                    class="med-btn-download"
+                    data-id="3"
+                  >
+                    Download
+                  </button>
+                </div>
+              </div>
+
+              <div class="med-record-card">
+                <div class="med-record-header">
+                  <h3>Prescription</h3>
+                  <span class="med-status active">Active</span>
+                </div>
+                <p class="med-record-date">February 22, 2025</p>
+                <p class="med-record-doctor">Dr. Mugabo Jean</p>
+                <p class="med-record-description">Lisinopril 10mg</p>
+                <div class="med-record-actions">
+                  <button
+                    class="med-btn-view"
+                    data-id="2"
+                    data-type="medication"
+                  >
+                    View Details
+                  </button>
+                  <button
+                    class="med-btn-download"
+                    data-id="2"
+                  >
+                    Download
+                  </button>
+                </div>
+              </div>
+
+              <div class="med-record-card">
+                <div class="med-record-header">
+                  <h3>Lab Results</h3>
+                  <span class="med-status reviewed">Reviewed</span>
+                </div>
+                <p class="med-record-date">February 28, 2025</p>
+                <p class="med-record-doctor">Dr. Mugabo Jean</p>
+                <p class="med-record-description">Blood Work - Lipid Panel</p>
+                <div class="med-record-actions">
+                  <button
+                    class="med-btn-view"
+                    data-id="1"
+                    data-type="labResult"
+                  >
+                    View Details
+                  </button>
+                  <button
+                    class="med-btn-download"
+                    data-id="1"
+                  >
+                    Download
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lab Results Tab Content -->
+            <div id="labResultsContent" class="med-records-list" style="display: none;">
+              <div class="med-record-card">
+                <div class="med-record-header">
+                  <h3>Blood Work</h3>
+                  <span class="med-status reviewed">Reviewed</span>
+                </div>
+                <p class="med-record-date">February 28, 2025</p>
+                <p class="med-record-doctor">Dr. Mugabo Jean</p>
+                <p class="med-record-description">Lipid Panel</p>
+                <div class="med-record-results">
+                  <h4>Results:</h4>
+                  <p>Total Cholesterol: 210mg/dL, HDL: 45mg/dL, LDL: 130mg/dL, Triglycerides: 180mg/dL</p>
+                </div>
+                <div class="med-record-actions">
+                  <button
+                    class="med-btn-view"
+                    data-id="1"
+                    data-type="labResult"
+                  >
+                    View Report
+                  </button>
+                  <button
+                    class="med-btn-download"
+                    data-id="1"
+                  >
+                    Download
+                  </button>
+                </div>
+              </div>
+
+              <div class="med-record-card">
+                <div class="med-record-header">
+                  <h3>Blood Work</h3>
+                  <span class="med-status reviewed">Reviewed</span>
+                </div>
+                <p class="med-record-date">January 28, 2025</p>
+                <p class="med-record-doctor">Dr. Mugabo Jean</p>
+                <p class="med-record-description">CBC</p>
+                <div class="med-record-results">
+                  <h4>Results:</h4>
+                  <p>WBC: 7.5, RBC: 4.8, Hemoglobin: 14.2g/dL, Platelets: 250</p>
+                </div>
+                <div class="med-record-actions">
+                  <button
+                    class="med-btn-view"
+                    data-id="4"
+                    data-type="labResult"
+                  >
+                    View Report
+                  </button>
+                  <button
+                    class="med-btn-download"
+                    data-id="4"
+                  >
+                    Download
+                  </button>
+                </div>
+              </div>
+
+              <div class="med-record-card">
+                <div class="med-record-header">
+                  <h3>Urinalysis</h3>
+                  <span class="med-status reviewed">Reviewed</span>
+                </div>
+                <p class="med-record-date">December 12, 2024</p>
+                <p class="med-record-doctor">Dr. Uwase Marie</p>
+                <p class="med-record-description">Routine Urinalysis</p>
+                <div class="med-record-results">
+                  <h4>Results:</h4>
+                  <p>No abnormalities detected</p>
+                </div>
+                <div class="med-record-actions">
+                  <button
+                    class="med-btn-view"
+                    data-id="5"
+                    data-type="labResult"
+                  >
+                    View Report
+                  </button>
+                  <button
+                    class="med-btn-download"
+                    data-id="5"
+                  >
+                    Download
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Medications Tab Content -->
+            <div id="medicationsContent" class="med-records-list" style="display: none;">
+              <div class="med-record-card">
+                <div class="med-record-header">
+                  <h3>Lisinopril</h3>
+                  <span class="med-dosage">10mg</span>
+                </div>
+                <p class="med-record-date">Prescribed: February 22, 2025</p>
+                <p class="med-record-doctor">By: Dr. Mugabo Jean</p>
+                <p class="med-record-instructions">Take once daily</p>
+                <div class="med-record-details">
+                  <p><span>Refills Remaining:</span> 3</p>
+                  <p><span>Ends:</span> August 22, 2025</p>
+                </div>
+                <div class="med-record-actions">
+                  <button
+                    class="med-btn-refill"
+                    data-id="2"
+                  >
+                    Request Refill
+                  </button>
+                  <button
+                    class="med-btn-reminder"
+                    data-id="2"
+                  >
+                    Set Reminder
+                  </button>
+                </div>
+              </div>
+
+              <div class="med-record-card">
+                <div class="med-record-header">
+                  <h3>Atorvastatin</h3>
+                  <span class="med-dosage">20mg</span>
+                </div>
+                <p class="med-record-date">Prescribed: January 15, 2025</p>
+                <p class="med-record-doctor">By: Dr. Mugabo Jean</p>
+                <p class="med-record-instructions">Take once daily at bedtime</p>
+                <div class="med-record-details">
+                  <p><span>Refills Remaining:</span> 2</p>
+                  <p><span>Ends:</span> July 15, 2025</p>
+                </div>
+                <div class="med-record-actions">
+                  <button
+                    class="med-btn-refill"
+                    data-id="6"
+                  >
+                    Request Refill
+                  </button>
+                  <button
+                    class="med-btn-reminder"
+                    data-id="6"
+                  >
+                    Set Reminder
+                  </button>
+                </div>
+              </div>
+
+              <div class="med-record-card">
+                <div class="med-record-header">
+                  <h3>Metformin</h3>
+                  <span class="med-dosage">500mg</span>
+                </div>
+                <p class="med-record-date">Prescribed: December 05, 2024</p>
+                <p class="med-record-doctor">By: Dr. Uwase Marie</p>
+                <p class="med-record-instructions">Take twice daily with meals</p>
+                <div class="med-record-details">
+                  <p><span>Refills Remaining:</span> 0</p>
+                  <p><span>Ends:</span> June 05, 2025</p>
+                </div>
+                <div class="med-record-actions">
+                  <button
+                    class="med-btn-refill"
+                    data-id="7"
+                  >
+                    Request Refill
+                  </button>
+                  <button
+                    class="med-btn-reminder"
+                    data-id="7"
+                  >
+                    Set Reminder
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Diagnoses Tab Content -->
+            <div id="diagnosesContent" class="med-records-list" style="display: none;">
+              <div class="med-record-card">
+                <div class="med-record-header">
+                  <h3>Hypertension - Stage 1</h3>
+                  <span class="med-status active">Active</span>
+                </div>
+                <p class="med-record-date">Diagnosed: February 15, 2025</p>
+                <p class="med-record-doctor">By: Dr. Mugabo Jean</p>
+                <div class="med-record-notes">
+                  <h4>Notes:</h4>
+                  <p>Monitor BP regularly, follow up in 1 month</p>
+                </div>
+                <div class="med-record-actions">
+                  <button
+                    class="med-btn-info"
+                    data-id="3"
+                  >
+                    Learn More
+                  </button>
+                  <button
+                    class="med-btn-track"
+                    data-id="3"
+                  >
+                    Track Symptoms
+                  </button>
+                </div>
+              </div>
+
+              <div class="med-record-card">
+                <div class="med-record-header">
+                  <h3>Type 2 Diabetes</h3>
+                  <span class="med-status active">Active</span>
+                </div>
+                <p class="med-record-date">Diagnosed: December 05, 2024</p>
+                <p class="med-record-doctor">By: Dr. Uwase Marie</p>
+                <div class="med-record-notes">
+                  <h4>Notes:</h4>
+                  <p>A1C: 6.8%, Follow DASH diet, increase physical activity</p>
+                </div>
+                <div class="med-record-actions">
+                  <button
+                    class="med-btn-info"
+                    data-id="8"
+                  >
+                    Learn More
+                  </button>
+                  <button
+                    class="med-btn-track"
+                    data-id="8"
+                  >
+                    Track Symptoms
+                  </button>
+                </div>
+              </div>
+
+              <div class="med-record-card">
+                <div class="med-record-header">
+                  <h3>Seasonal Allergies</h3>
+                  <span class="med-status intermittent">Intermittent</span>
+                </div>
+                <p class="med-record-date">Diagnosed: October 10, 2024</p>
+                <p class="med-record-doctor">By: Dr. Nkusi Patrick</p>
+                <div class="med-record-notes">
+                  <h4>Notes:</h4>
+                  <p>Use antihistamines as needed during high pollen seasons</p>
+                </div>
+                <div class="med-record-actions">
+                  <button
+                    class="med-btn-info"
+                    data-id="9"
+                  >
+                    Learn More
+                  </button>
+                  <button
+                    class="med-btn-track"
+                    data-id="9"
+                  >
+                    Track Symptoms
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Visits Tab Content -->
+            <div id="visitsContent" class="med-records-list" style="display: none;">
+              <div class="med-record-card">
+                <div class="med-record-header">
+                  <h3>Cardiology Visit</h3>
+                  <span class="med-visit-date">February 15, 2025</span>
+                </div>
+                <p class="med-record-doctor">Dr. Mugabo Jean</p>
+                <p class="med-record-reason">Reason: Hypertension Follow-up</p>
+                <div class="med-record-summary">
+                  <h4>Summary:</h4>
+                  <p>BP readings still elevated, medication adjusted, follow up in 1 month</p>
+                </div>
+                <div class="med-record-actions">
+                  <button
+                    class="med-btn-view"
+                    data-id="10"
+                    data-type="visit"
+                  >
+                    View Full Report
+                  </button>
+                  <button
+                    class="med-btn-follow"
+                    data-id="10"
+                  >
+                    Schedule Follow-up
+                  </button>
+                </div>
+              </div>
+
+              <div class="med-record-card">
+                <div class="med-record-header">
+                  <h3>Primary Care Visit</h3>
+                  <span class="med-visit-date">December 05, 2024</span>
+                </div>
+                <p class="med-record-doctor">Dr. Uwase Marie</p>
+                <p class="med-record-reason">Reason: Annual Physical</p>
+                <div class="med-record-summary">
+                  <h4>Summary:</h4>
+                  <p>Discovered elevated blood glucose, diagnosed Type 2 Diabetes, started on medication</p>
+                </div>
+                <div class="med-record-actions">
+                  <button
+                    class="med-btn-view"
+                    data-id="11"
+                    data-type="visit"
+                  >
+                    View Full Report
+                  </button>
+                  <button
+                    class="med-btn-follow"
+                    data-id="11"
+                  >
+                    Schedule Follow-up
+                  </button>
+                </div>
+              </div>
+
+              <div class="med-record-card">
+                <div class="med-record-header">
+                  <h3>Allergy & Immunology Visit</h3>
+                  <span class="med-visit-date">October 10, 2024</span>
+                </div>
+                <p class="med-record-doctor">Dr. Nkusi Patrick</p>
+                <p class="med-record-reason">Reason: Persistent Sneezing</p>
+                <div class="med-record-summary">
+                  <h4>Summary:</h4>
+                  <p>Diagnosed with seasonal allergies, prescribed antihistamines</p>
+                </div>
+                <div class="med-record-actions">
+                  <button
+                    class="med-btn-view"
+                    data-id="12"
+                    data-type="visit"
+                  >
+                    View Full Report
+                  </button>
+                  <button
+                    class="med-btn-follow"
+                    data-id="12"
+                  >
+                    Schedule Follow-up
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="med-actions-footer">
+            <button
+              class="med-btn-primary"
+              id="downloadAllBtn"
+            >
+              Download All Records
+            </button>
+            <button
+              class="med-btn-secondary"
+              id="shareProviderBtn"
+            >
+              Share with Provider
+            </button>
+            <button
+              class="med-btn-secondary"
+              id="printRecordsBtn"
+            >
+              Print Records
+            </button>
+          </div>
+        </div>
+
+        <!-- Modal for record details -->
+        <div id="recordModal" class="med-modal-overlay" style="display: none;">
+          <div class="med-modal-content">
+            <div class="med-modal-header">
+              <h2 id="modalTitle">Record Details</h2>
+              <button class="med-modal-close" id="closeModalBtn">×</button>
+            </div>
+            <div class="med-modal-body" id="modalBody">
+              <!-- Modal content will be dynamically inserted here -->
+            </div>
+            <div class="med-modal-footer">
+              <button id="closeModalFooterBtn">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="navbar.js"></script>
+  <script src="sidebar.js"></script>
+  <script src="records.js"></script>
+</body>
+</html>
