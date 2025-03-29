@@ -1,79 +1,148 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Connect Device - Evruriro</title>
+  <title>Connect Device - Evuriro</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/devices.css">
+  <link rel="stylesheet" href="navbar.css">
+  <link rel="stylesheet" href="sidebar.css">
+  <link rel="stylesheet" href="devices.css">
 </head>
 <body>
   <div class="app-container">
-    <!-- Include navbar -->
+    <!-- Include Navbar -->
     <div id="navbar-container"></div>
-    
+
     <div class="content-container">
-      <!-- Include sidebar -->
+      <!-- Include Sidebar -->
       <div id="sidebar-container"></div>
-      
-      <main class="main-content">
-        <div class="page-header">
-          <h1>Connect Device</h1>
-          <p>Connect a wearable device to monitor patient vitals in real-time</p>
-        </div>
-        
-        <div class="devices-container">
-          <div class="connection-guide">
-            <div class="guide-step">
-              <div class="step-icon">
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="evr-connect-device-container" id="connectDeviceContainer">
+          <div class="evr-connect-device-header">
+            <h1 class="evr-connect-device-title">Connect Device</h1>
+            <p class="evr-connect-device-description">
+              Connect a wearable device to monitor patient vitals in real-time
+            </p>
+          </div>
+
+          <div class="evr-connect-device-error" id="connectionError" style="display: none;">
+            <i class="fa fa-exclamation-triangle"></i> <span id="errorMessage"></span>
+          </div>
+
+          <div class="evr-connect-device-scan-section" id="scanSection">
+            <div class="evr-connect-device-instruction">
+              <div class="evr-connect-device-instruction-icon">
                 <i class="fa fa-wifi"></i>
               </div>
-              <div class="step-content">
+              <div class="evr-connect-device-instruction-text">
                 <h3>Connect a Wearable Device</h3>
                 <p>Turn on your Evruriro device and keep it within range</p>
               </div>
             </div>
-            
-            <div class="device-action">
-              <button class="btn primary" id="scanDevices">
-                <i class="fa fa-search"></i> Scan for Devices
+
+            <button
+              class="evr-connect-device-scan-button"
+              id="scanButton"
+            >
+              Scan for Devices
+            </button>
+
+            <div class="evr-connect-device-loading" id="loadingIndicator" style="display: none;">
+              <div class="evr-connect-device-spinner"></div>
+              <p>Searching for nearby devices...</p>
+            </div>
+
+            <div class="evr-connect-device-list" id="devicesList" style="display: none;">
+              <h3>Available Devices</h3>
+              <div id="devicesContainer">
+                <!-- Devices will be added here dynamically -->
+              </div>
+            </div>
+          </div>
+
+          <div class="evr-connect-device-monitor-section" id="monitorSection" style="display: none;">
+            <div class="evr-connect-device-connected-info">
+              <div class="evr-connect-device-connected-status">
+                <i class="fa fa-check-circle"></i>
+                <span id="connectedDeviceName">Connected to Device</span>
+              </div>
+              <button
+                class="evr-connect-device-disconnect-button"
+                id="disconnectButton"
+              >
+                Disconnect
               </button>
             </div>
-          </div>
-          
-          <div class="device-list-container">
-            <h2>Available Devices</h2>
-            <div class="device-list" id="deviceList">
-              <!-- Will be populated by JavaScript -->
+
+            <div class="evr-connect-device-vitals-grid">
+              <div class="evr-connect-device-vital-card">
+                <div class="evr-connect-device-vital-icon evr-temp-icon">
+                  <i class="fa fa-thermometer-half"></i>
+                </div>
+                <div class="evr-connect-device-vital-info">
+                  <div class="evr-connect-device-vital-label">Temperature</div>
+                  <div class="evr-connect-device-vital-value" id="temperatureValue">
+                    --
+                  </div>
+                </div>
+              </div>
+
+              <div class="evr-connect-device-vital-card">
+                <div class="evr-connect-device-vital-icon evr-heart-icon">
+                  <i class="fa fa-heartbeat"></i>
+                </div>
+                <div class="evr-connect-device-vital-info">
+                  <div class="evr-connect-device-vital-label">Heart Rate</div>
+                  <div class="evr-connect-device-vital-value" id="heartRateValue">
+                    --
+                  </div>
+                </div>
+              </div>
+
+              <div class="evr-connect-device-vital-card">
+                <div class="evr-connect-device-vital-icon evr-oxygen-icon">
+                  <i class="fa fa-plus-circle"></i>
+                </div>
+                <div class="evr-connect-device-vital-info">
+                  <div class="evr-connect-device-vital-label">Oxygen Level</div>
+                  <div class="evr-connect-device-vital-value" id="oxygenValue">
+                    --
+                  </div>
+                </div>
+              </div>
+
+              <div class="evr-connect-device-vital-card">
+                <div class="evr-connect-device-vital-icon evr-bp-icon">
+                  <i class="fa fa-tint"></i>
+                </div>
+                <div class="evr-connect-device-vital-info">
+                  <div class="evr-connect-device-vital-label">Blood Pressure</div>
+                  <div class="evr-connect-device-vital-value" id="bpValue">
+                    --
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          
-          <div class="connected-devices">
-            <h2>My Connected Devices</h2>
-            <div class="connected-list" id="connectedDevices">
-              <!-- Will be populated by JavaScript -->
-            </div>
-          </div>
-          
-          <div class="device-help">
-            <h3>Need help with your device?</h3>
-            <p>Contact our support team or check the user manuals for your specific device.</p>
-            <div class="help-actions">
-              <button class="btn secondary">
-                <i class="fa fa-book"></i> Device Manuals
-              </button>
-              <button class="btn secondary">
-                <i class="fa fa-headphones"></i> Contact Support
+
+            <div class="evr-connect-device-actions">
+              <button
+                class="evr-connect-device-save-button"
+                id="saveButton"
+              >
+                <i class="fa fa-plus"></i> Save to Patient Record
               </button>
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   </div>
 
-  <script src="main.js"></script>
+  <script src="navbar.js"></script>
+  <script src="sidebar.js"></script>
   <script src="devices.js"></script>
 </body>
 </html>

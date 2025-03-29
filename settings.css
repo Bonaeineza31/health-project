@@ -1,0 +1,311 @@
+/* Root variables */
+:root {
+    --primary-color: #1a73e8;
+    --secondary-color: #f1f3f4;
+    --text-color: #3c4043;
+    --light-text: #70757a;
+    --border-color: #dadce0;
+    --success-color: #34a853;
+    --warning-color: #fbbc04;
+    --danger-color: #ea4335;
+    --card-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --settings-primary-color: #4a90e2;
+    --settings-text-color: #333;
+    --settings-background-color: #f9f9f9;
+    --settings-card-background: #fff;
+    --settings-border-color: #e1e1e1;
+    --settings-success-color: #28a745;
+    --settings-cancel-color: #6c757d;
+    --settings-checkbox-size: 18px;
+    --settings-toggle-height: 24px;
+    --settings-toggle-width: 48px;
+    --settings-toggle-slider-size: 20px;
+}
+
+/* Dark theme variables */
+[data-theme="dark"] {
+    --primary-color: #3b82f6;
+    --secondary-color: #374151;
+    --text-color: #f0f0f0;
+    --light-text: #d1d5db;
+    --border-color: #4b5563;
+    --settings-text-color: #f0f0f0;
+    --settings-background-color: #1f2937;
+    --settings-card-background: #1f2937;
+    --settings-border-color: #374151;
+}
+
+body {
+    background-color: var(--settings-background-color);
+    color: var(--text-color);
+}
+
+/* Settings Styles */
+.settings-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    color: var(--settings-text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.settings-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--text-color);
+}
+
+.settings-card {
+    background-color: var(--settings-card-background);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+[data-theme="dark"] .settings-card {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.settings-card h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: 500;
+    border-bottom: 1px solid var(--settings-border-color);
+    padding-bottom: 10px;
+    color: var(--settings-text-color);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: var(--settings-text-color);
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--settings-border-color);
+    border-radius: 4px;
+    background-color: var(--settings-card-background);
+    color: var(--settings-text-color);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--settings-primary-color);
+}
+
+/* Toggle switch styling */
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: var(--settings-toggle-width);
+    height: var(--settings-toggle-height);
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: var(--settings-toggle-slider-size);
+    width: var(--settings-toggle-slider-size);
+    left: 4px;
+    bottom: 2px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: var(--settings-primary-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(calc(var(--settings-toggle-width) - var(--settings-toggle-slider-size) - 8px));
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Checkbox container styling */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    user-select: none;
+    color: var(--settings-text-color);
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: var(--settings-checkbox-size);
+    width: var(--settings-checkbox-size);
+    background-color: #eee;
+    border: 1px solid var(--settings-border-color);
+    border-radius: 4px;
+}
+
+[data-theme="dark"] .checkmark {
+    background-color: #374151;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+[data-theme="dark"] .checkbox-container:hover input ~ .checkmark {
+    background-color: #4b5563;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: var(--settings-primary-color);
+    border-color: var(--settings-primary-color);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-container .checkmark:after {
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Language selector */
+.settings-language-selector {
+    display: flex;
+    gap: 10px;
+}
+
+.language-btn {
+    padding: 8px 15px;
+    border: 1px solid var(--settings-border-color);
+    background: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--settings-text-color);
+}
+
+.language-btn.active {
+    background-color: var(--settings-primary-color);
+    color: white;
+    border-color: var(--settings-primary-color);
+}
+
+/* Action buttons */
+.settings-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-cancel,
+.btn-save {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.btn-cancel {
+    background-color: var(--settings-cancel-color);
+    color: white;
+}
+
+.btn-save {
+    background-color: var(--settings-success-color);
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: #5a6268;
+}
+
+.btn-save:hover {
+    background-color: #218838;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .settings-container {
+        padding: 10px;
+    }
+
+    .settings-card {
+        padding: 15px;
+    }
+
+    .settings-language-selector {
+        flex-direction: column;
+    }
+
+    .settings-actions {
+        flex-direction: column;
+    }
+
+    .btn-cancel,
+    .btn-save {
+        width: 100%;
+    }
+}

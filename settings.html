@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - Evuriro</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="navbar.css">
+  <link rel="stylesheet" href="sidebar.css">
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Include Navbar -->
+    <div id="navbar-container"></div>
+
+    <div class="content-container">
+      <!-- Include Sidebar -->
+      <div id="sidebar-container"></div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="settings-container" id="settingsContainer">
+          <h1 id="settingsTitle">Settings</h1>
+
+          <div class="settings-card">
+            <h2 id="personalInfoTitle">Personal Information</h2>
+            <div class="form-group">
+              <label id="firstNameLabel">First Name</label>
+              <input
+                type="text"
+                id="firstName"
+                value="John"
+              />
+            </div>
+            <div class="form-group">
+              <label id="lastNameLabel">Last Name</label>
+              <input
+                type="text"
+                id="lastName"
+                value="Doe"
+              />
+            </div>
+            <div class="form-group">
+              <label id="emailLabel">Email</label>
+              <input
+                type="email"
+                id="email"
+                value="john.doe@example.com"
+              />
+            </div>
+            <div class="form-group">
+              <label id="phoneLabel">Phone Number</label>
+              <input
+                type="tel"
+                id="phone"
+                value="+1234567890"
+              />
+            </div>
+            <div class="form-group">
+              <label id="dobLabel">Date of Birth</label>
+              <input
+                type="date"
+                id="dateOfBirth"
+                value="1990-01-01"
+              />
+            </div>
+            <div class="form-group">
+              <label id="genderLabel">Gender</label>
+              <select id="gender">
+                <option value="Male" selected>Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+                <option value="Prefer not to say">Prefer not to say</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label id="idNumberLabel">ID Number</label>
+              <input
+                type="text"
+                id="idNumber"
+                value="ID12345678"
+              />
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <h2 id="addressTitle">Address</h2>
+            <div class="form-group">
+              <label id="streetAddressLabel">Street Address</label>
+              <input
+                type="text"
+                id="address"
+                value="123 Main St"
+              />
+            </div>
+            <div class="form-group">
+              <label id="cityLabel">City</label>
+              <input
+                type="text"
+                id="city"
+                value="Metropolis"
+              />
+            </div>
+            <div class="form-group">
+              <label id="countryLabel">Country</label>
+              <input
+                type="text"
+                id="country"
+                value="United States"
+              />
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <h2 id="emergencyContactTitle">Emergency Contact</h2>
+            <div class="form-group">
+              <label id="emergencyNameLabel">Name</label>
+              <input
+                type="text"
+                id="emergencyName"
+                value="Jane Doe"
+              />
+            </div>
+            <div class="form-group">
+              <label id="relationshipLabel">Relationship</label>
+              <input
+                type="text"
+                id="relationship"
+                value="Spouse"
+              />
+            </div>
+            <div class="form-group">
+              <label id="emergencyPhoneLabel">Phone</label>
+              <input
+                type="tel"
+                id="emergencyPhone"
+                value="+0987654321"
+              />
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <h2 id="appearanceTitle">Appearance</h2>
+            <div class="form-group">
+              <label id="themeLabel">Theme</label>
+              <div class="toggle-container">
+                <span id="lightThemeLabel">Light</span>
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="themeToggle"
+                  />
+                  <span class="slider round"></span>
+                </label>
+                <span id="darkThemeLabel">Dark</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label id="languageSettingLabel">Language</label>
+              <div class="settings-language-selector">
+                <button
+                  class="language-btn active"
+                  id="langEn"
+                >
+                  English
+                </button>
+                <button
+                  class="language-btn"
+                  id="langFr"
+                >
+                  Français
+                </button>
+                <button
+                  class="language-btn"
+                  id="langKin"
+                >
+                  Kinyarwanda
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <h2 id="notificationsTitle">Notification Preferences</h2>
+            <div class="form-group">
+              <label class="checkbox-container" id="emailNotificationsLabel">
+                <input
+                  type="checkbox"
+                  id="emailNotifications"
+                  checked
+                />
+                <span class="checkmark"></span>
+                Email Notifications
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-container" id="smsNotificationsLabel">
+                <input
+                  type="checkbox"
+                  id="smsNotifications"
+                  checked
+                />
+                <span class="checkmark"></span>
+                SMS Notifications
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-container" id="appNotificationsLabel">
+                <input
+                  type="checkbox"
+                  id="appNotifications"
+                  checked
+                />
+                <span class="checkmark"></span>
+                App Notifications
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-container" id="appointmentRemindersLabel">
+                <input
+                  type="checkbox"
+                  id="appointmentReminders"
+                  checked
+                />
+                <span class="checkmark"></span>
+                Appointment Reminders
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-container" id="medicationRemindersLabel">
+                <input
+                  type="checkbox"
+                  id="medicationReminders"
+                  checked
+                />
+                <span class="checkmark"></span>
+                Medication Reminders
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-container" id="resultUpdatesLabel">
+                <input
+                  type="checkbox"
+                  id="resultUpdates"
+                  checked
+                />
+                <span class="checkmark"></span>
+                Test Result Updates
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <h2 id="privacyTitle">Privacy Settings</h2>
+            <div class="form-group">
+              <label class="checkbox-container" id="shareDataLabel">
+                <input
+                  type="checkbox"
+                  id="shareDataWithProviders"
+                  checked
+                />
+                <span class="checkmark"></span>
+                Share data with healthcare providers
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-container" id="researchUseLabel">
+                <input
+                  type="checkbox"
+                  id="allowResearchUse"
+                />
+                <span class="checkmark"></span>
+                Allow anonymous data use for research
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-container" id="publicProfileLabel">
+                <input
+                  type="checkbox"
+                  id="showProfilePublicly"
+                />
+                <span class="checkmark"></span>
+                Show my profile to other users
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <h2 id="accessibilityTitle">Accessibility</h2>
+            <div class="form-group">
+              <label id="fontSizeLabel">Font Size</label>
+              <select id="fontSize">
+                <option value="small">Small</option>
+                <option value="medium" selected>Medium</option>
+                <option value="large">Large</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-container" id="highContrastLabel">
+                <input
+                  type="checkbox"
+                  id="highContrast"
+                />
+                <span class="checkmark"></span>
+                High Contrast Mode
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-container" id="screenReaderLabel">
+                <input
+                  type="checkbox"
+                  id="screenReader"
+                />
+                <span class="checkmark"></span>
+                Screen Reader Compatibility
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-actions">
+            <button class="btn-cancel" id="cancelButton">Cancel</button>
+            <button class="btn-save" id="saveButton">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="navbar.js"></script>
+  <script src="sidebar.js"></script>
+  <script src="settings.js"></script>
+</body>
+</html>
