@@ -50,6 +50,7 @@ Evuriro is a healthcare application designed to help patients manage their healt
 - **Code Synchronization**: Manually copying code from local VS Code to web servers
 - **Solution**: Implemented a consistent git clone and update process
 - **Backend API**: Connected to https://evuriro-backend.onrender.com/
+- **Backend link**: https://github.com/Bonaeineza31/evuriro-backend.git
 
 ## Server Infrastructure
  - **Web Server 01**: `ubuntu@54.197.202.33`
