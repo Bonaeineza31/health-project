@@ -1,51 +1,65 @@
-<!-- sidebar.html -->
-<div class="sidebar">
-    <div class="sidebar-menu">
-      <a href="dashboard.html" class="menu-item">
-        <i class="fa fa-th-large"></i>
-        <span>Dashboard</span>
-      </a>
-      
-      <a href="appointments.html" class="menu-item">
-        <i class="fa fa-calendar"></i>
-        <span>Appointments</span>
-      </a>
-      
-      <a href="teleconsultation.html" class="menu-item">
-        <i class="fa fa-video-camera"></i>
-        <span>Teleconsultation</span>
-      </a>
-      
-      <a href="records.html" class="menu-item">
-        <i class="fa fa-file-text"></i>
-        <span>Medical Records</span>
-      </a>
-      
-      <a href="hospitals.html" class="menu-item">
-        <i class="fa fa-hospital-o"></i>
-        <span>Nearby Hospitals</span>
-      </a>
-      
-      <a href="devices.html" class="menu-item">
-        <i class="fa fa-plug"></i>
-        <span>Connect Device</span>
-      </a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar - Evuriro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="sidebar.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-menu">
+            <a href="dashboard.html" class="menu-item active">
+                <i class="fa fa-th-large"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="appointments.html" class="menu-item">
+                <i class="fa fa-calendar"></i>
+                <span>Appointments</span>
+            </a>
+
+            <a href="teleconsultation.html" class="menu-item">
+                <i class="fa fa-video-camera"></i>
+                <span>Teleconsultation</span>
+            </a>
+
+            <a href="records.html" class="menu-item">
+                <i class="fa fa-file-text"></i>
+                <span>Medical Records</span>
+            </a>
+
+            <a href="hospitals.html" class="menu-item">
+                <i class="fa fa-hospital-o"></i>
+                <span>Nearby Hospitals</span>
+            </a>
+
+            <a href="devices.html" class="menu-item">
+                <i class="fa fa-plug"></i>
+                <span>Connect Device</span>
+            </a>
+        </div>
+
+        <div class="sidebar-footer">
+            <a href="settings.html" class="menu-item">
+                <i class="fa fa-cog"></i>
+                <span>Settings</span>
+            </a>
+
+            <a href="help.html" class="menu-item">
+                <i class="fa fa-question-circle"></i>
+                <span>Help Center</span>
+            </a>
+
+            <div class="dark-mode-toggle" id="darkModeToggle">
+                <i class="fa fa-moon-o"></i>
+                <span>Dark Mode</span>
+            </div>
+        </div>
     </div>
-    
-    <div class="sidebar-footer">
-      <a href="settings.html" class="menu-item">
-        <i class="fa fa-cog"></i>
-        <span>Settings</span>
-      </a>
-      
-      <a href="help.html" class="menu-item">
-        <i class="fa fa-question-circle"></i>
-        <span>Help Center</span>
-      </a>
-      
-      <div class="dark-mode-toggle">
-        <i class="fa fa-moon-o"></i>
-        <span>Dark Mode</span>
-      </div>
-    </div>
-  </div>
+
+    <script src="sidebar.js"></script>
+</body>
+</html>
