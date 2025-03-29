@@ -1,135 +1,451 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Teleconsultation - Evruriro</title>
+  <title>Teleconsultation - Evuriro</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/teleconsultation.css">
+  <link rel="stylesheet" href="navbar.css">
+  <link rel="stylesheet" href="sidebar.css">
+  <link rel="stylesheet" href="teleconsultation.css">
 </head>
 <body>
   <div class="app-container">
-    <!-- Include navbar -->
+    <!-- Include Navbar -->
     <div id="navbar-container"></div>
-    
+
     <div class="content-container">
-      <!-- Include sidebar -->
+      <!-- Include Sidebar -->
       <div id="sidebar-container"></div>
-      
-      <main class="main-content">
-        <div class="page-header">
-          <h1>Teleconsultation</h1>
-        </div>
-        
+
+      <!-- Main Content -->
+      <div class="main-content">
         <div class="telecon-container">
-          <div class="upcoming-consultations">
-            <h2>Upcoming Teleconsultations</h2>
-            
-            <div class="consultation-list" id="upcomingConsultations">
-              <!-- Will be populated by JavaScript -->
+          <div class="telecon-header">
+            <h1>Teleconsultation</h1>
+            <div class="telecon-appointment-status">
+              <span class="telecon-status-indicator active"></span>
+              Your appointment with Dr. Sarah Johnson is ready
             </div>
           </div>
-          
-          <div class="start-consultation">
-            <h2>Quick Connect</h2>
-            <p>Connect with a doctor now for urgent consultations</p>
-            
-            <div class="specialty-selection">
-              <h3>Select Specialty</h3>
-              <div class="specialty-grid">
-                <button class="specialty-item" data-specialty="general">
-                  <i class="fa fa-user-md"></i>
-                  <span>General</span>
-                </button>
-                <button class="specialty-item" data-specialty="cardiology">
-                  <i class="fa fa-heartbeat"></i>
-                  <span>Cardiology</span>
-                </button>
-                <button class="specialty-item" data-specialty="dermatology">
-                  <i class="fa fa-leaf"></i>
-                  <span>Dermatology</span>
-                </button>
-                <button class="specialty-item" data-specialty="pediatrics">
-                  <i class="fa fa-child"></i>
-                  <span>Pediatrics</span>
-                </button>
-              </div>
-            </div>
-            
-            <div class="consultation-actions">
-              <button class="btn primary" id="startEmergencyConsultation">
-                <i class="fa fa-phone"></i> Start Emergency Consultation
-              </button>
-              <button class="btn secondary" id="scheduleConsultation">
-                <i class="fa fa-calendar"></i> Schedule for Later
-              </button>
-            </div>
-          </div>
-          
-          <div class="past-consultations">
-            <h2>Past Consultations</h2>
-            
-            <div class="consultation-history" id="pastConsultations">
-              <!-- Will be populated by JavaScript -->
-            </div>
-          </div>
-        </div>
-        
-        <!-- Teleconsultation Room Modal -->
-        <div id="teleconModal" class="telecon-modal">
-          <div class="telecon-content">
-            <div class="telecon-header">
-              <h2>Consultation with <span id="doctorName">Dr. Smith</span></h2>
-              <div class="call-timer" id="callTimer">00:00</div>
-              <div class="call-controls">
-                <button class="call-btn mute-btn">
-                  <i class="fa fa-microphone-slash"></i>
-                </button>
-                <button class="call-btn video-btn">
-                  <i class="fa fa-video-camera"></i>
-                </button>
-                <button class="call-btn end-btn">
-                  <i class="fa fa-phone"></i>
-                </button>
-              </div>
-            </div>
-            
-            <div class="telecon-body">
-              <div class="video-container">
-                <div class="main-video">
-                  <div class="video-placeholder doctor">
-                    <i class="fa fa-user-md"></i>
-                    <span>Doctor's camera is connecting...</span>
-                  </div>
+
+          <div class="telecon-appointment-details">
+            <div class="telecon-appointment-card">
+              <div class="telecon-doctor-info">
+                <div class="telecon-doctor-avatar">
+                  <span class="telecon-avatar-placeholder">SJ</span>
                 </div>
-                <div class="self-video">
-                  <div class="video-placeholder self">
-                    <i class="fa fa-user"></i>
-                    <span>Your camera</span>
+                <div class="telecon-doctor-details">
+                  <h2>Dr. Sarah Johnson</h2>
+                  <p>Cardiology</p>
+                  <div class="telecon-appointment-time">
+                    <i class="telecon-icon-calendar"></i>
+                    <span>March 1, 2025 • 10:00 AM</span>
                   </div>
                 </div>
               </div>
-              
-              <div class="chat-container">
-                <div class="chat-messages" id="chatMessages">
-                  <!-- Will be populated by JavaScript -->
+              <div class="telecon-action-buttons">
+                <button class="telecon-btn-join" id="joinConsultationBtn">
+                  Join Consultation
+                </button>
+                <button class="telecon-btn-chat" id="toggleChatBtn">
+                  Open Chat
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="telecon-consultation-content">
+            <div class="telecon-tabs">
+              <button class="active" id="appointmentDetailsTab">
+                Appointment Details
+              </button>
+              <button id="vitalsTab">
+                My Vitals
+              </button>
+              <button id="symptomsTab">
+                Symptoms
+              </button>
+              <button id="historyTab">
+                Medical History
+              </button>
+            </div>
+
+            <div class="telecon-tab-content">
+              <!-- Appointment Details Tab Content -->
+              <div id="appointmentDetailsContent" class="telecon-appointment-info">
+                <h3>Appointment Information</h3>
+                <div class="telecon-info-grid">
+                  <div class="telecon-info-item">
+                    <span class="telecon-label">Doctor</span>
+                    <span class="telecon-value">Dr. Sarah Johnson</span>
+                  </div>
+                  <div class="telecon-info-item">
+                    <span class="telecon-label">Specialty</span>
+                    <span class="telecon-value">Cardiology</span>
+                  </div>
+                  <div class="telecon-info-item">
+                    <span class="telecon-label">Date</span>
+                    <span class="telecon-value">March 1, 2025</span>
+                  </div>
+                  <div class="telecon-info-item">
+                    <span class="telecon-label">Time</span>
+                    <span class="telecon-value">10:00 AM</span>
+                  </div>
+                  <div class="telecon-info-item">
+                    <span class="telecon-label">Duration</span>
+                    <span class="telecon-value">30 minutes</span>
+                  </div>
+                  <div class="telecon-info-item">
+                    <span class="telecon-label">Format</span>
+                    <span class="telecon-value">Video consultation</span>
+                  </div>
                 </div>
-                <div class="chat-input">
-                  <input type="text" id="messageInput" placeholder="Type a message...">
-                  <button id="sendMessage">
-                    <i class="fa fa-paper-plane"></i>
-                  </button>
+                <div class="telecon-appointment-notes">
+                  <h4>Appointment Notes</h4>
+                  <p>Please be ready 5 minutes before the scheduled time. Ensure you have a stable internet connection and are in a quiet, well-lit area.</p>
+                </div>
+                <div class="telecon-prepare-checklist">
+                  <h4>Prepare for your visit</h4>
+                  <ul class="telecon-checklist" id="prepChecklist">
+                    <li class="checked">Confirmation email received</li>
+                    <li class="checked">Test your camera and microphone</li>
+                    <li>Prepare a list of your current medications</li>
+                    <li>Write down any questions you have for the doctor</li>
+                    <li>Have your insurance information ready</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Vitals Tab Content -->
+              <div id="vitalsContent" class="telecon-vitals-info" style="display: none;">
+                <h3>My Current Vitals</h3>
+                <div class="telecon-vitals-grid">
+                  <div class="telecon-vital-item">
+                    <div class="telecon-vital-data">
+                      <div class="vital-icon">
+                        <i class="fa fa-heartbeat"></i>
+                      </div>
+                      <div>
+                        <span class="telecon-vital-label">Heart Rate</span>
+                        <div class="telecon-vital-value" id="heartRateValue">78 bpm</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="telecon-vital-item">
+                    <div class="telecon-vital-data">
+                      <div class="vital-icon">
+                        <i class="fa fa-tint"></i>
+                      </div>
+                      <div>
+                        <span class="telecon-vital-label">Blood Pressure</span>
+                        <div class="telecon-vital-value" id="bloodPressureValue">120/80 mmHg</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="telecon-vital-item">
+                    <div class="telecon-vital-data">
+                      <div class="vital-icon">
+                        <i class="fa fa-thermometer-half"></i>
+                      </div>
+                      <div>
+                        <span class="telecon-vital-label">Temperature</span>
+                        <div class="telecon-vital-value" id="temperatureValue">98.6°F</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="telecon-vital-item">
+                    <div class="telecon-vital-data">
+                      <div class="vital-icon">
+                        <i class="fa fa-plus-circle"></i>
+                      </div>
+                      <div>
+                        <span class="telecon-vital-label">Oxygen Level</span>
+                        <div class="telecon-vital-value" id="oxygenValue">98%</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="telecon-vital-history">
+                  <h4>Vitals History</h4>
+                  <div class="telecon-chart-placeholder">
+                    <p>Vitals tracking chart would appear here</p>
+                  </div>
+                  <button class="telecon-btn-upload" id="uploadVitalsBtn">Upload New Vitals</button>
+                </div>
+              </div>
+
+              <!-- Symptoms Tab Content -->
+              <div id="symptomsContent" class="telecon-symptoms-tracker" style="display: none;">
+                <h3>Symptom Tracker</h3>
+                <div class="telecon-symptom-form">
+                  <div class="telecon-symptom-section">
+                    <h4>Current Symptoms</h4>
+                    <div class="telecon-symptom-tags" id="symptomTags">
+                      <span class="telecon-symptom-tag">
+                        Headache (Moderate)
+                        <button class="telecon-remove-tag" data-index="0">×</button>
+                      </span>
+                      <span class="telecon-symptom-tag">
+                        Sore throat (Mild)
+                        <button class="telecon-remove-tag" data-index="1">×</button>
+                      </span>
+                      <span class="telecon-symptom-tag">
+                        Fatigue (Severe)
+                        <button class="telecon-remove-tag" data-index="2">×</button>
+                      </span>
+                      <button class="telecon-add-symptom" id="addSymptomBtn">+ Add Symptom</button>
+                    </div>
+                    <div class="telecon-add-symptom-form" id="addSymptomForm" style="display: none;">
+                      <input
+                        type="text"
+                        id="newSymptom"
+                        placeholder="Symptom name"
+                      />
+                      <select id="symptomSeverity">
+                        <option value="Mild">Mild</option>
+                        <option value="Moderate">Moderate</option>
+                        <option value="Severe">Severe</option>
+                      </select>
+                      <button id="saveSymptomBtn">Add</button>
+                      <button id="cancelSymptomBtn">Cancel</button>
+                    </div>
+                  </div>
+
+                  <div class="telecon-symptom-section">
+                    <h4>Symptom Timeline</h4>
+                    <div class="telecon-timeline">
+                      <div class="telecon-timeline-item">
+                        <div class="telecon-timeline-date">Today</div>
+                        <div class="telecon-timeline-content">
+                          <p>Headache (Moderate), Sore throat (Mild), Fatigue (Severe)</p>
+                        </div>
+                      </div>
+                      <div class="telecon-timeline-item">
+                        <div class="telecon-timeline-date">Yesterday</div>
+                        <div class="telecon-timeline-content">
+                          <p>Headache (Mild), Sore throat (Mild)</p>
+                        </div>
+                      </div>
+                      <div class="telecon-timeline-item">
+                        <div class="telecon-timeline-date">Feb 28</div>
+                        <div class="telecon-timeline-content">
+                          <p>Sore throat (Mild)</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="telecon-symptom-notes">
+                    <h4>Notes for Doctor</h4>
+                    <textarea
+                      id="doctorNotes"
+                      placeholder="Describe your symptoms in detail here..."
+                    >I've been experiencing a headache for the past two days along with a sore throat. The headache gets worse in the evening and the fatigue started this morning.</textarea>
+                    <button class="telecon-btn-save" id="saveNotesBtn">Save Notes</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Medical History Tab Content -->
+              <div id="historyContent" class="telecon-medical-history" style="display: none;">
+                <h3>Medical History</h3>
+                <div class="telecon-history-sections">
+                  <div class="telecon-history-section">
+                    <h4>Current Medications</h4>
+                    <ul class="telecon-medication-list">
+                      <li>
+                        <div class="telecon-medication-name">Lisinopril 10mg</div>
+                        <div class="telecon-medication-details">1 tablet daily for blood pressure</div>
+                      </li>
+                      <li>
+                        <div class="telecon-medication-name">Vitamin D 1000 IU</div>
+                        <div class="telecon-medication-details">1 tablet daily</div>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div class="telecon-history-section">
+                    <h4>Allergies</h4>
+                    <ul class="telecon-allergy-list">
+                      <li>Penicillin</li>
+                      <li>Pollen</li>
+                    </ul>
+                  </div>
+
+                  <div class="telecon-history-section">
+                    <h4>Past Medical Conditions</h4>
+                    <ul class="telecon-condition-list">
+                      <li>
+                        <div class="telecon-condition-name">Hypertension</div>
+                        <div class="telecon-condition-details">Diagnosed 2022, Managed with medication</div>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div class="telecon-history-section">
+                    <h4>Previous Appointments</h4>
+                    <div class="telecon-appointment-history">
+                      <div class="telecon-past-appointment">
+                        <div class="telecon-appointment-header">
+                          <div class="telecon-past-doctor">Dr. Smith (General Medicine)</div>
+                          <div class="telecon-past-date">Jan 15, 2025</div>
+                        </div>
+                        <div class="telecon-appointment-summary">
+                          Annual check-up. All vitals were normal. Recommended continuing current medications.
+                        </div>
+                      </div>
+                      <div class="telecon-past-appointment">
+                        <div class="telecon-appointment-header">
+                          <div class="telecon-past-doctor">Dr. Johnson (Cardiology)</div>
+                          <div class="telecon-past-date">Nov 10, 2024</div>
+                        </div>
+                        <div class="telecon-appointment-summary">
+                          Follow-up for hypertension. Blood pressure well-controlled. Continue with current treatment.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </main>
+
+        <!-- Video Call Container (initially hidden) -->
+        <div id="videoCallContainer" class="telecon-video-container" style="display: none;">
+          <!-- Remote Doctor's Video -->
+          <div class="telecon-main-video">
+            <div class="telecon-video-placeholder doctor" id="doctorVideo">
+              <span>Doctor's Video</span>
+            </div>
+          </div>
+
+          <!-- Local User's Video -->
+          <div class="telecon-self-video">
+            <div class="telecon-video-placeholder self" id="selfVideo">
+              <span>Your Video</span>
+            </div>
+          </div>
+
+          <!-- Call Controls -->
+          <div class="call-controls">
+            <button
+              class="control-btn active"
+              id="micToggleBtn"
+              title="Toggle Microphone"
+            >
+              <i class="fa fa-microphone"></i>
+            </button>
+            <button
+              class="control-btn active"
+              id="videoToggleBtn"
+              title="Toggle Camera"
+            >
+              <i class="fa fa-video-camera"></i>
+            </button>
+            <button
+              class="control-btn"
+              id="screenShareBtn"
+              title="Share Screen"
+            >
+              <i class="fa fa-desktop"></i>
+            </button>
+            <button
+              class="end-call-btn"
+              id="endCallBtn"
+              title="End Call"
+            >
+              <i class="fa fa-phone"></i> End Call
+            </button>
+          </div>
+        </div>
+
+        <!-- Chat Panel (initially hidden) -->
+        <div id="chatPanel" class="telecon-chat-panel" style="display: none;">
+          <div class="telecon-chat-header">
+            <h3>Chat with Dr. Sarah Johnson</h3>
+            <button class="telecon-close-chat" id="closeChatBtn">×</button>
+          </div>
+          <div class="telecon-chat-messages" id="chatMessages">
+            <div class="telecon-message incoming">
+              <div class="telecon-message-content">
+                <div class="telecon-message-header">
+                  <span class="telecon-message-sender">Dr. Sarah Johnson</span>
+                  <span class="telecon-message-time">10:01 AM</span>
+                </div>
+                <p class="telecon-message-text">Hello! I can see you have been experiencing some symptoms. How are you feeling today?</p>
+              </div>
+            </div>
+          </div>
+          <div class="telecon-chat-input">
+            <textarea
+              id="newMessageInput"
+              placeholder="Type a message..."
+            ></textarea>
+            <button class="telecon-send-button" id="sendMessageBtn">
+              <i class="telecon-icon-send"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Update Vitals Modal (initially hidden) -->
+        <div id="vitalsModal" class="vitals-update-modal-overlay" style="display: none;">
+          <div class="vitals-update-modal">
+            <h2>Update Vitals</h2>
+
+            <div class="update-vital-field">
+              <label for="heartRate">Heart Rate (bpm)</label>
+              <input
+                type="text"
+                id="heartRateInput"
+                name="heartRate"
+                value="78"
+              />
+            </div>
+
+            <div class="update-vital-field">
+              <label for="bloodPressure">Blood Pressure (mmHg)</label>
+              <input
+                type="text"
+                id="bloodPressureInput"
+                name="bloodPressure"
+                value="120/80"
+              />
+            </div>
+
+            <div class="update-vital-field">
+              <label for="temperature">Temperature (°F)</label>
+              <input
+                type="text"
+                id="temperatureInput"
+                name="temperature"
+                value="98.6"
+              />
+            </div>
+
+            <div class="update-vital-field">
+              <label for="oxygenLevel">Oxygen Level (%)</label>
+              <input
+                type="text"
+                id="oxygenInput"
+                name="oxygenLevel"
+                value="98"
+              />
+            </div>
+
+            <div class="update-vital-actions">
+              <button class="btn-cancel" id="cancelVitalsBtn">Cancel</button>
+              <button class="btn-save" id="saveVitalsBtn">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <script src="js/main.js"></script>
-  <script src="js/teleconsultation.js"></script>
+  <script src="navbar.js"></script>
+  <script src="sidebar.js"></script>
+  <script src="teleconsultation.js"></script>
 </body>
 </html>

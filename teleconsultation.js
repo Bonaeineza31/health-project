@@ -1,494 +1,611 @@
-// teleconsultation.js - Handles all functionality for the teleconsultation page
+// Load components
+document.addEventListener('DOMContentLoaded', async function() {
+  // Load navbar
+  const navbarResponse = await fetch('navbar.html');
+  const navbarHtml = await navbarResponse.text();
+  document.getElementById('navbar-container').innerHTML = navbarHtml;
+  
+  // Load sidebar
+  const sidebarResponse = await fetch('sidebar.html');
+  const sidebarHtml = await sidebarResponse.text();
+  document.getElementById('sidebar-container').innerHTML = sidebarHtml;
+  
+  // Initialize teleconsultation
+  initTeleconsultation();
+});
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Mock data for upcoming consultations
-    const upcomingConsultations = [
-      {
-        id: 1,
-        doctorName: 'Dr. Sarah Johnson',
-        specialty: 'Cardiology',
-        date: '2025-03-25',
-        time: '10:00',
-        type: 'in-person'
-      },
-      {
-        id: 2,
-        doctorName: 'Dr. Michael Chen',
-        specialty: 'Dermatology',
-        date: '2025-04-05',
-        time: '14:30',
-        type: 'teleconsultation'
-      }
-    ];
-  
-    // Mock data for past consultations
-    const pastConsultations = [
-      {
-        id: 101,
-        doctorName: 'Dr. Smith',
-        specialty: 'General',
-        date: '2025-03-21',
-        time: '09:00',
-        type: 'teleconsultation',
-        notes: 'Follow-up on medication. Blood pressure improving.'
-      },
-      {
-        id: 102,
-        doctorName: 'Dr. Emily Rodriguez',
-        specialty: 'Dermatology',
-        date: '2025-03-15',
-        time: '16:00',
-        type: 'teleconsultation',
-        notes: 'Skin condition improving. Continue current treatment.'
-      },
-      {
-        id: 103,
-        doctorName: 'Dr. James Wilson',
-        specialty: 'Internal Medicine',
-        date: '2025-02-28',
-        time: '11:30',
-        type: 'in-person',
-        notes: 'Annual checkup completed. All vitals normal.'
-      }
-    ];
-  
-    // DOM elements
-    const upcomingConsultationsContainer = document.getElementById('upcomingConsultations');
-    const pastConsultationsContainer = document.getElementById('pastConsultations');
-    const startEmergencyBtn = document.getElementById('startEmergencyConsultation');
-    const scheduleConsultationBtn = document.getElementById('scheduleConsultation');
-    const teleconModal = document.getElementById('teleconModal');
-    const specialtyButtons = document.querySelectorAll('.specialty-item');
-    const sendMessageBtn = document.getElementById('sendMessage');
-    const messageInput = document.getElementById('messageInput');
-    const chatMessages = document.getElementById('chatMessages');
-    const callTimer = document.getElementById('callTimer');
-    const doctorNameElement = document.getElementById('doctorName');
-  
-    // Variables
-    let selectedSpecialty = 'general';
-    let timerInterval = null;
-    let secondsElapsed = 0;
-  
-    // Initialize the page
-    function init() {
-      renderUpcomingConsultations();
-      renderPastConsultations();
-      setupEventListeners();
-    }
-  
-    // Render upcoming consultations
-    function renderUpcomingConsultations() {
-      if (!upcomingConsultationsContainer) return;
-      
-      upcomingConsultationsContainer.innerHTML = '';
-      
-      if (upcomingConsultations.length === 0) {
-        upcomingConsultationsContainer.innerHTML = '<p class="no-data">No upcoming consultations scheduled</p>';
-        return;
-      }
-  
-      upcomingConsultations.forEach(consultation => {
-        const consultationElement = document.createElement('div');
-        consultationElement.className = 'consultation-card';
-        
-        const date = new Date(consultation.date);
-        const formattedDate = date.toLocaleDateString('en-US', { 
-          day: '2-digit', 
-          month: '2-digit', 
-          year: 'numeric' 
-        });
-  
-        consultationElement.innerHTML = `
-          <div class="consultation-info">
-            <h3>${consultation.doctorName}</h3>
-            <p class="specialty">${consultation.specialty}</p>
-            <p class="datetime">
-              <i class="fa fa-calendar"></i> ${formattedDate} at ${consultation.time}
-            </p>
-            <span class="consultation-type ${consultation.type}">${consultation.type}</span>
-          </div>
-          <div class="consultation-actions">
-            <button class="btn secondary reschedule-btn" data-id="${consultation.id}">Reschedule</button>
-            ${consultation.type === 'teleconsultation' ? 
-              `<button class="btn primary join-btn" data-id="${consultation.id}" data-doctor="${consultation.doctorName}">Join Now</button>` : 
-              `<button class="btn primary">Get Directions</button>`
-            }
-          </div>
-        `;
-        
-        upcomingConsultationsContainer.appendChild(consultationElement);
+function initTeleconsultation() {
+  // DOM Elements - Navigation
+  const profileDropdown = document.getElementById('profileDropdown');
+  const profileMenu = document.getElementById('profileMenu');
+  const darkModeToggle = document.getElementById('darkModeToggle');
+
+  // DOM Elements - Tabs
+  const appointmentDetailsTab = document.getElementById('appointmentDetailsTab');
+  const vitalsTab = document.getElementById('vitalsTab');
+  const symptomsTab = document.getElementById('symptomsTab');
+  const historyTab = document.getElementById('historyTab');
+
+  const appointmentDetailsContent = document.getElementById('appointmentDetailsContent');
+  const vitalsContent = document.getElementById('vitalsContent');
+  const symptomsContent = document.getElementById('symptomsContent');
+  const historyContent = document.getElementById('historyContent');
+
+  // DOM Elements - Consultation
+  const joinConsultationBtn = document.getElementById('joinConsultationBtn');
+  const toggleChatBtn = document.getElementById('toggleChatBtn');
+  const videoCallContainer = document.getElementById('videoCallContainer');
+  const chatPanel = document.getElementById('chatPanel');
+  const closeChatBtn = document.getElementById('closeChatBtn');
+
+  // DOM Elements - Video Call
+  const doctorVideo = document.getElementById('doctorVideo');
+  const selfVideo = document.getElementById('selfVideo');
+  const micToggleBtn = document.getElementById('micToggleBtn');
+  const videoToggleBtn = document.getElementById('videoToggleBtn');
+  const screenShareBtn = document.getElementById('screenShareBtn');
+  const endCallBtn = document.getElementById('endCallBtn');
+
+  // DOM Elements - Chat
+  const chatMessages = document.getElementById('chatMessages');
+  const newMessageInput = document.getElementById('newMessageInput');
+  const sendMessageBtn = document.getElementById('sendMessageBtn');
+
+  // DOM Elements - Vitals
+  const uploadVitalsBtn = document.getElementById('uploadVitalsBtn');
+  const vitalsModal = document.getElementById('vitalsModal');
+  const heartRateInput = document.getElementById('heartRateInput');
+  const bloodPressureInput = document.getElementById('bloodPressureInput');
+  const temperatureInput = document.getElementById('temperatureInput');
+  const oxygenInput = document.getElementById('oxygenInput');
+  const cancelVitalsBtn = document.getElementById('cancelVitalsBtn');
+  const saveVitalsBtn = document.getElementById('saveVitalsBtn');
+
+  // DOM Elements - Symptoms
+  const symptomTags = document.getElementById('symptomTags');
+  const addSymptomBtn = document.getElementById('addSymptomBtn');
+  const addSymptomForm = document.getElementById('addSymptomForm');
+  const newSymptom = document.getElementById('newSymptom');
+  const symptomSeverity = document.getElementById('symptomSeverity');
+  const saveSymptomBtn = document.getElementById('saveSymptomBtn');
+  const cancelSymptomBtn = document.getElementById('cancelSymptomBtn');
+  const saveNotesBtn = document.getElementById('saveNotesBtn');
+  const doctorNotes = document.getElementById('doctorNotes');
+
+  // DOM Elements - Checklist
+  const prepChecklist = document.getElementById('prepChecklist');
+
+  // State variables
+  let isCallActive = false;
+  let isMicOn = true;
+  let isVideoOn = true;
+  let isScreenSharing = false;
+  let showChat = false;
+  let localStream = null;
+  let callStatus = 'ready';
+
+  // Vitals data
+  let patientVitals = {
+      heartRate: '78 bpm',
+      bloodPressure: '120/80 mmHg',
+      temperature: '98.6°F',
+      oxygenLevel: '98%'
+  };
+
+  // Symptoms data
+  let symptoms = [
+      { name: 'Headache', severity: 'Moderate' },
+      { name: 'Sore throat', severity: 'Mild' },
+      { name: 'Fatigue', severity: 'Severe' }
+  ];
+
+  // Profile dropdown toggle
+  if (profileDropdown) {
+      profileDropdown.addEventListener('click', () => {
+          profileMenu.style.display = profileMenu.style.display === 'block' ? 'none' : 'block';
       });
-  
-      // Add event listeners to the join buttons
-      document.querySelectorAll('.join-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const consultationId = e.target.getAttribute('data-id');
-          const doctorName = e.target.getAttribute('data-doctor');
-          openTeleconModal(doctorName);
-        });
+
+      // Close dropdown when clicking outside
+      window.addEventListener('click', (e) => {
+          if (!profileDropdown.contains(e.target)) {
+              profileMenu.style.display = 'none';
+          }
       });
-  
-      // Add event listeners to the reschedule buttons
-      document.querySelectorAll('.reschedule-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const consultationId = e.target.getAttribute('data-id');
-          // Redirect to appointment scheduling page with the consultation ID
-          window.location.href = `appointment.html?reschedule=${consultationId}`;
-        });
+  }
+
+  // Dark mode toggle
+  if (darkModeToggle) {
+      darkModeToggle.addEventListener('click', () => {
+          toggleDarkMode();
       });
-    }
-  
-    // Render past consultations
-    function renderPastConsultations() {
-      if (!pastConsultationsContainer) return;
-      
-      pastConsultationsContainer.innerHTML = '';
-      
-      if (pastConsultations.length === 0) {
-        pastConsultationsContainer.innerHTML = '<p class="no-data">No consultation history available</p>';
-        return;
+  }
+
+  // Toggle dark mode function
+  function toggleDarkMode() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+      if (isDark) {
+          document.documentElement.setAttribute('data-theme', 'light');
+      } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
       }
-  
-      pastConsultations.forEach(consultation => {
-        const consultationElement = document.createElement('div');
-        consultationElement.className = 'history-card';
-        
-        const date = new Date(consultation.date);
-        const formattedDate = date.toLocaleDateString('en-US', { 
-          day: '2-digit', 
-          month: '2-digit', 
-          year: 'numeric' 
-        });
-  
-        consultationElement.innerHTML = `
-          <div class="history-header">
-            <div>
-              <h3>${consultation.doctorName}</h3>
-              <p class="specialty">${consultation.specialty}</p>
-              <p class="datetime">
-                <i class="fa fa-calendar"></i> ${formattedDate} at ${consultation.time}
-              </p>
-              <span class="consultation-type ${consultation.type}">${consultation.type}</span>
-            </div>
-            <div class="history-actions">
-              <button class="btn secondary view-summary-btn" data-id="${consultation.id}">
-                <i class="fa fa-file-text-o"></i> View Summary
-              </button>
-              ${consultation.type === 'teleconsultation' ? 
-                `<button class="btn secondary view-recording-btn" data-id="${consultation.id}">
-                  <i class="fa fa-video-camera"></i> View Recording
-                </button>` : ''
+
+      // Save to localStorage
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      
+      // Dispatch theme change event for other components
+      document.dispatchEvent(new CustomEvent('themeChange', {
+          detail: { theme: isDark ? 'light' : 'dark' }
+      }));
+  }
+
+  // Tab switching
+  if (appointmentDetailsTab) {
+      appointmentDetailsTab.addEventListener('click', () => switchTab('appointmentDetails'));
+  }
+  if (vitalsTab) {
+      vitalsTab.addEventListener('click', () => switchTab('vitals'));
+  }
+  if (symptomsTab) {
+      symptomsTab.addEventListener('click', () => switchTab('symptoms'));
+  }
+  if (historyTab) {
+      historyTab.addEventListener('click', () => switchTab('history'));
+  }
+
+  function switchTab(tabName) {
+      // Hide all tab contents
+      appointmentDetailsContent.style.display = 'none';
+      vitalsContent.style.display = 'none';
+      symptomsContent.style.display = 'none';
+      historyContent.style.display = 'none';
+
+      // Remove active class from all tabs
+      appointmentDetailsTab.classList.remove('active');
+      vitalsTab.classList.remove('active');
+      symptomsTab.classList.remove('active');
+      historyTab.classList.remove('active');
+
+      // Show selected tab content and add active class
+      if (tabName === 'appointmentDetails') {
+          appointmentDetailsContent.style.display = 'block';
+          appointmentDetailsTab.classList.add('active');
+      } else if (tabName === 'vitals') {
+          vitalsContent.style.display = 'block';
+          vitalsTab.classList.add('active');
+      } else if (tabName === 'symptoms') {
+          symptomsContent.style.display = 'block';
+          symptomsTab.classList.add('active');
+      } else if (tabName === 'history') {
+          historyContent.style.display = 'block';
+          historyTab.classList.add('active');
+      }
+  }
+
+  // Join consultation button
+  if (joinConsultationBtn) {
+      joinConsultationBtn.addEventListener('click', async () => {
+          if (callStatus === 'ready') {
+              callStatus = 'connecting';
+              joinConsultationBtn.textContent = 'Connecting...';
+              joinConsultationBtn.classList.remove('telecon-btn-join');
+              joinConsultationBtn.classList.add('telecon-btn-connecting');
+              joinConsultationBtn.disabled = true;
+
+              try {
+                  // Request camera and microphone access
+                  localStream = await navigator.mediaDevices.getUserMedia({
+                      video: true,
+                      audio: true
+                  });
+
+                  // Display local video
+                  const videoElement = document.createElement('video');
+                  videoElement.srcObject = localStream;
+                  videoElement.autoplay = true;
+                  videoElement.muted = true; // Mute local video to prevent feedback
+                  videoElement.style.width = '100%';
+                  videoElement.style.height = '100%';
+                  videoElement.style.objectFit = 'cover';
+
+                  // Replace placeholder with video
+                  selfVideo.innerHTML = '';
+                  selfVideo.appendChild(videoElement);
+
+                  // Show video call container
+                  videoCallContainer.style.display = 'flex';
+
+                  // Update call status
+                  callStatus = 'ongoing';
+
+                  // Update join button to end call button
+                  joinConsultationBtn.textContent = 'End Call';
+                  joinConsultationBtn.classList.remove('telecon-btn-connecting');
+                  joinConsultationBtn.classList.add('telecon-btn-end-call');
+                  joinConsultationBtn.disabled = false;
+
+                  // Simulate doctor joining after a delay
+                  setTimeout(() => {
+                      // Create a placeholder video for the doctor
+                      const doctorVideoElement = document.createElement('div');
+                      doctorVideoElement.className = 'telecon-video-placeholder doctor';
+                      doctorVideoElement.innerHTML = `
+                          <img src="https://randomuser.me/api/portraits/women/44.jpg"
+                              alt="Dr. Sarah Johnson"
+                              style="width: 100%; height: 100%; object-fit: cover;"
+                              onerror="this.src='/placeholder.svg?height=300&width=400'">
+                      `;
+
+                      // Replace placeholder with doctor's video
+                      doctorVideo.innerHTML = '';
+                      doctorVideo.appendChild(doctorVideoElement);
+                  }, 3000);
+
+              } catch (error) {
+                  console.error('Error accessing media devices:', error);
+                  alert('Failed to access camera and microphone. Please check permissions.');
+
+                  // Reset button
+                  callStatus = 'ready';
+                  joinConsultationBtn.textContent = 'Join Consultation';
+                  joinConsultationBtn.classList.remove('telecon-btn-connecting');
+                  joinConsultationBtn.classList.add('telecon-btn-join');
+                  joinConsultationBtn.disabled = false;
               }
-            </div>
-          </div>
-          <div class="history-notes">
-            <p><strong>Notes:</strong> ${consultation.notes}</p>
-          </div>
-        `;
-        
-        pastConsultationsContainer.appendChild(consultationElement);
+          } else if (callStatus === 'ongoing') {
+              // End the call
+              endCall();
+          }
       });
-  
-      // Add event listeners to the view summary buttons
-      document.querySelectorAll('.view-summary-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const consultationId = e.target.getAttribute('data-id');
-          // Open consultation summary (can be implemented to show a modal or navigate to a new page)
-          alert(`Viewing summary for consultation ${consultationId}`);
-        });
+  }
+
+  // End call function
+  function endCall() {
+      // Stop all tracks in the local stream
+      if (localStream) {
+          localStream.getTracks().forEach(track => track.stop());
+      }
+
+      // Hide video call container
+      videoCallContainer.style.display = 'none';
+
+      // Reset video placeholders
+      selfVideo.innerHTML = '<span>Your Video</span>';
+      doctorVideo.innerHTML = '<span>Doctor\'s Video</span>';
+
+      // Reset call status
+      callStatus = 'ready';
+
+      // Reset join button
+      joinConsultationBtn.textContent = 'Join Consultation';
+      joinConsultationBtn.classList.remove('telecon-btn-end-call');
+      joinConsultationBtn.classList.add('telecon-btn-join');
+  }
+
+  // End call button
+  if (endCallBtn) {
+      endCallBtn.addEventListener('click', endCall);
+  }
+
+  // Toggle microphone
+  if (micToggleBtn) {
+      micToggleBtn.addEventListener('click', () => {
+          if (localStream) {
+              const audioTracks = localStream.getAudioTracks();
+              if (audioTracks.length > 0) {
+                  const audioTrack = audioTracks[0];
+                  audioTrack.enabled = !audioTrack.enabled;
+                  isMicOn = audioTrack.enabled;
+
+                  // Update button icon
+                  micToggleBtn.innerHTML = isMicOn ?
+                      '<i class="fa fa-microphone"></i>' :
+                      '<i class="fa fa-microphone-slash"></i>';
+
+                  // Update button class
+                  if (isMicOn) {
+                      micToggleBtn.classList.remove('inactive');
+                      micToggleBtn.classList.add('active');
+                  } else {
+                      micToggleBtn.classList.remove('active');
+                      micToggleBtn.classList.add('inactive');
+                  }
+              }
+          }
       });
-  
-      // Add event listeners to the view recording buttons
-      document.querySelectorAll('.view-recording-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const consultationId = e.target.getAttribute('data-id');
-          // Open consultation recording (can be implemented to show a modal with video player)
-          alert(`Viewing recording for consultation ${consultationId}`);
-        });
+  }
+
+  // Toggle video
+  if (videoToggleBtn) {
+      videoToggleBtn.addEventListener('click', () => {
+          if (localStream) {
+              const videoTracks = localStream.getVideoTracks();
+              if (videoTracks.length > 0) {
+                  const videoTrack = videoTracks[0];
+                  videoTrack.enabled = !videoTrack.enabled;
+                  isVideoOn = videoTrack.enabled;
+
+                  // Update button icon
+                  videoToggleBtn.innerHTML = isVideoOn ?
+                      '<i class="fa fa-video-camera"></i>' :
+                      '<i class="fa fa-video-camera-slash"></i>';
+
+                  // Update button class
+                  if (isVideoOn) {
+                      videoToggleBtn.classList.remove('inactive');
+                      videoToggleBtn.classList.add('active');
+                  } else {
+                      videoToggleBtn.classList.remove('active');
+                      videoToggleBtn.classList.add('inactive');
+                  }
+              }
+          }
       });
-    }
-  
-    // Set up event listeners for the page
-    function setupEventListeners() {
-      // Specialty selection
-      specialtyButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-          // Remove active class from all buttons
-          specialtyButtons.forEach(btn => btn.classList.remove('active'));
-          
-          // Add active class to clicked button
-          e.currentTarget.classList.add('active');
-          
-          // Update selected specialty
-          selectedSpecialty = e.currentTarget.getAttribute('data-specialty');
-        });
+  }
+
+  // Toggle screen sharing
+  if (screenShareBtn) {
+      screenShareBtn.addEventListener('click', () => {
+          isScreenSharing = !isScreenSharing;
+
+          // Update button icon
+          screenShareBtn.innerHTML = isScreenSharing ?
+              '<i class="fa fa-stop-circle"></i>' :
+              '<i class="fa fa-desktop"></i>';
+
+          // Update button class
+          if (isScreenSharing) {
+              screenShareBtn.classList.add('active');
+              alert('Screen sharing started');
+          } else {
+              screenShareBtn.classList.remove('active');
+              alert('Screen sharing stopped');
+          }
       });
+  }
+
+  // Toggle chat panel
+  if (toggleChatBtn) {
+      toggleChatBtn.addEventListener('click', () => {
+          showChat = !showChat;
+          chatPanel.style.display = showChat ? 'flex' : 'none';
+
+          // Update button text
+          toggleChatBtn.textContent = showChat ? 'Hide Chat' : 'Open Chat';
+
+          // Update button class
+          if (showChat) {
+              toggleChatBtn.classList.add('active');
+          } else {
+              toggleChatBtn.classList.remove('active');
+          }
+      });
+  }
+
+  // Close chat button
+  if (closeChatBtn) {
+      closeChatBtn.addEventListener('click', () => {
+          showChat = false;
+          chatPanel.style.display = 'none';
+          toggleChatBtn.textContent = 'Open Chat';
+          toggleChatBtn.classList.remove('active');
+      });
+  }
+
+  // Send message
+  if (sendMessageBtn) {
+      sendMessageBtn.addEventListener('click', sendMessage);
+  }
   
-      // Start emergency consultation
-      if (startEmergencyBtn) {
-        startEmergencyBtn.addEventListener('click', () => {
-          // In a real application, this would check doctor availability
-          // For demo purposes, show a loading state and then open the modal
-          startEmergencyBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Connecting...';
-          startEmergencyBtn.disabled = true;
-          
+  if (newMessageInput) {
+      newMessageInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              sendMessage();
+          }
+      });
+  }
+
+  function sendMessage() {
+      const messageText = newMessageInput.value.trim();
+      if (messageText) {
+          // Get current time
+          const now = new Date();
+          const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+          // Add message to chat
+          const messageHTML = `
+              <div class="telecon-message outgoing">
+                  <div class="telecon-message-content">
+                      <div class="telecon-message-header">
+                          <span class="telecon-message-sender">You</span>
+                          <span class="telecon-message-time">${timeString}</span>
+                      </div>
+                      <p class="telecon-message-text">${messageText}</p>
+                  </div>
+              </div>
+          `;
+          chatMessages.insertAdjacentHTML('beforeend', messageHTML);
+
+          // Clear input
+          newMessageInput.value = '';
+
+          // Scroll to bottom
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+
+          // Simulate doctor's response after a delay
           setTimeout(() => {
-            startEmergencyBtn.innerHTML = '<i class="fa fa-phone"></i> Start Emergency Consultation';
-            startEmergencyBtn.disabled = false;
-            
-            // Get doctor name based on selected specialty
-            let doctorName = 'Dr. Smith';
-            switch (selectedSpecialty) {
-              case 'cardiology':
-                doctorName = 'Dr. Sarah Johnson';
-                break;
-              case 'dermatology':
-                doctorName = 'Dr. Emily Rodriguez';
-                break;
-              case 'pediatrics':
-                doctorName = 'Dr. Michael Chen';
-                break;
-              default:
-                doctorName = 'Dr. Smith';
-            }
-            
-            openTeleconModal(doctorName);
+              const responses = [
+                  "Thank you for sharing those details. Have you tried any home remedies for your symptoms?",
+                  "I see. When did these symptoms first appear?",
+                  "I understand your concern. Let's discuss this further during our video consultation.",
+                  "Have you checked your temperature recently?"
+              ];
+              const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+              const responseTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+              const responseHTML = `
+                  <div class="telecon-message incoming">
+                      <div class="telecon-message-content">
+                          <div class="telecon-message-header">
+                              <span class="telecon-message-sender">Dr. Sarah Johnson</span>
+                              <span class="telecon-message-time">${responseTime}</span>
+                          </div>
+                          <p class="telecon-message-text">${randomResponse}</p>
+                      </div>
+                  </div>
+              `;
+              chatMessages.insertAdjacentHTML('beforeend', responseHTML);
+
+              // Scroll to bottom
+              chatMessages.scrollTop = chatMessages.scrollHeight;
           }, 2000);
-        });
       }
-  
-      // Schedule consultation
-      if (scheduleConsultationBtn) {
-        scheduleConsultationBtn.addEventListener('click', () => {
-          // Redirect to appointment scheduling page with the selected specialty
-          window.location.href = `appointment.html?specialty=${selectedSpecialty}`;
-        });
-      }
-  
-      // Telecon modal controls
-      if (teleconModal) {
-        // Close modal when clicking the end call button
-        document.querySelector('.end-btn').addEventListener('click', () => {
-          closeTeleconModal();
-        });
-  
-        // Toggle mute
-        document.querySelector('.mute-btn').addEventListener('click', (e) => {
-          e.currentTarget.classList.toggle('active');
-          const icon = e.currentTarget.querySelector('i');
-          if (e.currentTarget.classList.contains('active')) {
-            icon.className = 'fa fa-microphone';
-          } else {
-            icon.className = 'fa fa-microphone-slash';
+  }
+
+  // Upload vitals
+  if (uploadVitalsBtn) {
+      uploadVitalsBtn.addEventListener('click', () => {
+          // Pre-fill form with current values
+          heartRateInput.value = patientVitals.heartRate.replace(' bpm', '');
+          bloodPressureInput.value = patientVitals.bloodPressure.replace(' mmHg', '');
+          temperatureInput.value = patientVitals.temperature.replace('°F', '');
+          oxygenInput.value = patientVitals.oxygenLevel.replace('%', '');
+
+          // Show modal
+          vitalsModal.style.display = 'flex';
+      });
+  }
+
+  // Cancel vitals update
+  if (cancelVitalsBtn) {
+      cancelVitalsBtn.addEventListener('click', () => {
+          vitalsModal.style.display = 'none';
+      });
+  }
+
+  // Save vitals update
+  if (saveVitalsBtn) {
+      saveVitalsBtn.addEventListener('click', () => {
+          // Update vitals data
+          patientVitals.heartRate = `${heartRateInput.value} bpm`;
+          patientVitals.bloodPressure = `${bloodPressureInput.value} mmHg`;
+          patientVitals.temperature = `${temperatureInput.value}°F`;
+          patientVitals.oxygenLevel = `${oxygenInput.value}%`;
+
+          // Update display
+          document.getElementById('heartRateValue').textContent = patientVitals.heartRate;
+          document.getElementById('bloodPressureValue').textContent = patientVitals.bloodPressure;
+          document.getElementById('temperatureValue').textContent = patientVitals.temperature;
+          document.getElementById('oxygenValue').textContent = patientVitals.oxygenLevel;
+
+          // Hide modal
+          vitalsModal.style.display = 'none';
+      });
+  }
+
+  // Add symptom
+  if (addSymptomBtn) {
+      addSymptomBtn.addEventListener('click', () => {
+          addSymptomForm.style.display = 'block';
+          addSymptomBtn.style.display = 'none';
+      });
+  }
+
+  // Cancel add symptom
+  if (cancelSymptomBtn) {
+      cancelSymptomBtn.addEventListener('click', () => {
+          addSymptomForm.style.display = 'none';
+          addSymptomBtn.style.display = 'inline-block';
+          newSymptom.value = '';
+      });
+  }
+
+  // Save symptom
+  if (saveSymptomBtn) {
+      saveSymptomBtn.addEventListener('click', () => {
+          const symptomName = newSymptom.value.trim();
+          const severity = symptomSeverity.value;
+
+          if (symptomName) {
+              // Add to symptoms array
+              symptoms.push({ name: symptomName, severity: severity });
+
+              // Add to UI
+              const newTag = document.createElement('span');
+              newTag.className = 'telecon-symptom-tag';
+              newTag.innerHTML = `
+                  ${symptomName} (${severity})
+                  <button class="telecon-remove-tag" data-index="${symptoms.length - 1}">×</button>
+              `;
+              symptomTags.insertBefore(newTag, addSymptomBtn);
+
+              // Reset form
+              newSymptom.value = '';
+              addSymptomForm.style.display = 'none';
+              addSymptomBtn.style.display = 'inline-block';
+
+              // Update timeline
+              updateSymptomTimeline();
           }
-        });
-  
-        // Toggle video
-        document.querySelector('.video-btn').addEventListener('click', (e) => {
-          e.currentTarget.classList.toggle('active');
-          const icon = e.currentTarget.querySelector('i');
-          if (e.currentTarget.classList.contains('active')) {
-            icon.className = 'fa fa-video-camera-slash';
-            document.querySelector('.self-video .video-placeholder').style.display = 'flex';
-          } else {
-            icon.className = 'fa fa-video-camera';
-            document.querySelector('.self-video .video-placeholder').style.display = 'none';
+      });
+  }
+
+  // Remove symptom
+  if (symptomTags) {
+      symptomTags.addEventListener('click', (e) => {
+          if (e.target.classList.contains('telecon-remove-tag')) {
+              const index = parseInt(e.target.getAttribute('data-index'));
+
+              // Remove from array
+              symptoms.splice(index, 1);
+
+              // Update UI
+              e.target.parentElement.remove();
+
+              // Update data-index attributes
+              const removeButtons = document.querySelectorAll('.telecon-remove-tag');
+              removeButtons.forEach((button, i) => {
+                  button.setAttribute('data-index', i);
+              });
+
+              // Update timeline
+              updateSymptomTimeline();
           }
-        });
-      }
-  
-      // Chat functionality
-      if (sendMessageBtn && messageInput && chatMessages) {
-        sendMessageBtn.addEventListener('click', sendMessage);
-        messageInput.addEventListener('keypress', (e) => {
-          if (e.key === 'Enter') {
-            sendMessage();
+      });
+  }
+
+  // Update symptom timeline
+  function updateSymptomTimeline() {
+      // In a real app, this would update the timeline data
+      console.log('Updating symptom timeline with:', symptoms);
+  }
+
+  // Save doctor notes
+  if (saveNotesBtn) {
+      saveNotesBtn.addEventListener('click', () => {
+          alert('Notes saved successfully!');
+      });
+  }
+
+  // Checklist items
+  if (prepChecklist) {
+      prepChecklist.addEventListener('click', (e) => {
+          if (e.target.tagName === 'LI') {
+              e.target.classList.toggle('checked');
           }
-        });
-      }
-    }
-  
-    // Open teleconsultation modal
-    function openTeleconModal(doctorName) {
-      if (!teleconModal) return;
-      
-      // Set doctor name
-      if (doctorNameElement) {
-        doctorNameElement.textContent = doctorName;
-      }
-      
-      // Reset chat
-      if (chatMessages) {
-        chatMessages.innerHTML = '';
-        
-        // Add system message
-        addChatMessage('system', 'Connecting to consultation room...');
-        
-        setTimeout(() => {
-          addChatMessage('system', `You're connected with ${doctorName}`);
-          
-          setTimeout(() => {
-            addChatMessage('doctor', 'Hello! How can I help you today?');
-          }, 1000);
-        }, 1500);
-      }
-      
-      // Show modal
-      teleconModal.style.display = 'flex';
-      
-      // Start timer
-      startTimer();
-      
-      // Simulate doctor connection after a delay
-      setTimeout(() => {
-        document.querySelector('.main-video .video-placeholder').innerHTML = `
-          <i class="fa fa-user-md"></i>
-          <span>${doctorName} is connected</span>
-        `;
-      }, 3000);
-    }
-  
-    // Close teleconsultation modal
-    function closeTeleconModal() {
-      if (!teleconModal) return;
-      
-      // Hide modal
-      teleconModal.style.display = 'none';
-      
-      // Stop timer
-      stopTimer();
-      
-      // Reset UI elements
-      document.querySelector('.main-video .video-placeholder').innerHTML = `
-        <i class="fa fa-user-md"></i>
-        <span>Doctor's camera is connecting...</span>
-      `;
-      
-      document.querySelector('.mute-btn').classList.remove('active');
-      document.querySelector('.mute-btn i').className = 'fa fa-microphone-slash';
-      
-      document.querySelector('.video-btn').classList.remove('active');
-      document.querySelector('.video-btn i').className = 'fa fa-video-camera';
-    }
-  
-    // Send chat message
-    function sendMessage() {
-      if (!messageInput || !chatMessages) return;
-      
-      const message = messageInput.value.trim();
-      if (message === '') return;
-      
-      // Add user message
-      addChatMessage('user', message);
-      
-      // Clear input
-      messageInput.value = '';
-      
-      // Simulate doctor response after a delay
-      setTimeout(() => {
-        // For demo purposes, generate a simple response
-        let response;
-        if (message.toLowerCase().includes('hello') || message.toLowerCase().includes('hi')) {
-          response = 'Hello! How are you feeling today?';
-        } else if (message.toLowerCase().includes('pain') || message.toLowerCase().includes('hurt')) {
-          response = 'I\'m sorry to hear that. Can you describe the pain level on a scale of 1-10?';
-        } else if (message.toLowerCase().includes('prescription') || message.toLowerCase().includes('medicine')) {
-          response = 'I can send an updated prescription to your pharmacy. Which one do you prefer?';
-        } else if (message.toLowerCase().includes('thank')) {
-          response = 'You\'re welcome! Is there anything else I can help you with today?';
-        } else {
-          response = 'I understand. Could you tell me more about your symptoms?';
-        }
-        
-        addChatMessage('doctor', response);
-      }, 1000);
-    }
-  
-    // Add message to chat
-    function addChatMessage(type, content) {
-      if (!chatMessages) return;
-      
-      const messageElement = document.createElement('div');
-      messageElement.className = `chat-message ${type}-message`;
-      
-      let messageHTML;
-      if (type === 'user') {
-        messageHTML = `
-          <div class="message-content">
-            <p>${content}</p>
-            <span class="message-time">${getCurrentTime()}</span>
-          </div>
-          <div class="message-avatar">
-            <i class="fa fa-user"></i>
-          </div>
-        `;
-      } else if (type === 'doctor') {
-        messageHTML = `
-          <div class="message-avatar">
-            <i class="fa fa-user-md"></i>
-          </div>
-          <div class="message-content">
-            <p>${content}</p>
-            <span class="message-time">${getCurrentTime()}</span>
-          </div>
-        `;
-      } else if (type === 'system') {
-        messageHTML = `
-          <div class="system-message">
-            <p>${content}</p>
-            <span class="message-time">${getCurrentTime()}</span>
-          </div>
-        `;
-      }
-      
-      messageElement.innerHTML = messageHTML;
-      chatMessages.appendChild(messageElement);
-      
-      // Scroll to bottom
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-  
-    // Start call timer
-    function startTimer() {
-      if (!callTimer) return;
-      
-      // Reset
-      secondsElapsed = 0;
-      clearInterval(timerInterval);
-      
-      // Update timer every second
-      timerInterval = setInterval(() => {
-        secondsElapsed++;
-        
-        const minutes = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
-        const seconds = (secondsElapsed % 60).toString().padStart(2, '0');
-        
-        callTimer.textContent = `${minutes}:${seconds}`;
-      }, 1000);
-    }
-  
-    // Stop call timer
-    function stopTimer() {
-      clearInterval(timerInterval);
-      if (callTimer) {
-        callTimer.textContent = '00:00';
-      }
-    }
-  
-    // Get current time for chat messages
-    function getCurrentTime() {
-      const now = new Date();
-      let hours = now.getHours();
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-      
-      hours = hours % 12;
-      hours = hours ? hours : 12; // Convert 0 to 12
-      
-      return `${hours}:${minutes} ${ampm}`;
-    }
-  
-    // Initialize the page
-    init();
+      });
+  }
+
+  // Listen for theme change events from sidebar
+  document.addEventListener('themeChange', (e) => {
+      document.documentElement.setAttribute('data-theme', e.detail.theme);
   });
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+      // Load theme preference
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+  });
+}
