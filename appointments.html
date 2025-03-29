@@ -1,93 +1,192 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Schedule Appointment - Evruriro</title>
+  <title>Appointments - Evuriro</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/appointments.css">
+  <link rel="stylesheet" href="navbar.css">
+  <link rel="stylesheet" href="sidebar.css">
+  <link rel="stylesheet" href="appointments.css">
 </head>
 <body>
   <div class="app-container">
-    <!-- Include navbar -->
+    <!-- Include Navbar -->
     <div id="navbar-container"></div>
-    
+
     <div class="content-container">
-      <!-- Include sidebar -->
+      <!-- Include Sidebar -->
       <div id="sidebar-container"></div>
-      
-      <main class="main-content">
-        <div class="page-header">
-          <h1>Schedule an Appointment</h1>
-          <p>Find available healthcare professionals and book your next visit</p>
-        </div>
-        
-        <div class="appointment-container">
-          <div class="appointment-filters">
-            <div class="search-box">
-              <input type="text" id="doctorSearch" placeholder="Search by doctor name or keywords">
-            </div>
-            
-            <div class="filter-group">
-              <select id="specialtyFilter" class="filter-select">
-                <option value="">All Specialties</option>
-                <option value="cardiology">Cardiology</option>
-                <option value="dermatology">Dermatology</option>
-                <option value="internal">Internal Medicine</option>
-                <option value="neurology">Neurology</option>
-                <option value="pediatrics">Pediatrics</option>
-              </select>
-            </div>
-            
-            <div class="appointment-type-filter">
-              <button class="type-btn active" data-type="in-person">In-Person</button>
-              <button class="type-btn" data-type="virtual">Virtual</button>
-            </div>
-            
-            <button class="btn secondary" id="clearFilters">Clear Filters</button>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="appointment-container" id="appointmentContainer">
+          <div class="appointment-header">
+            <h2>Schedule an Appointment</h2>
+            <p>Find available healthcare professionals and book your next visit</p>
           </div>
-          
-          <div class="doctors-list" id="doctorsList">
-            <!-- Will be populated by JavaScript -->
+
+          <div id="errorMessage" class="error-message hidden">
+            <i class="fa fa-exclamation-circle"></i>
+            <p id="errorText"></p>
           </div>
-          
-          <div id="appointmentModal" class="modal">
-            <div class="modal-content">
-              <span class="close-modal">&times;</span>
-              <h2>Schedule with <span id="selectedDoctor"></span></h2>
-              
-              <div class="appointment-form">
-                <div class="form-group">
-                  <label for="appointmentDate">Select Date</label>
-                  <input type="date" id="appointmentDate" required>
+
+          <div id="successMessage" class="success-message hidden">
+            <i class="fa fa-check-circle"></i>
+            <p id="successText"></p>
+            <p class="redirecting">Redirecting to dashboard...</p>
+          </div>
+
+          <!-- Step 1: Find a doctor -->
+          <div id="step1" class="find-doctor-section step-1">
+            <div class="search-filters">
+              <div class="search-box">
+                <input type="text" id="searchQuery" placeholder="Search by doctor name or keywords">
+                <button class="search-button2">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+
+              <div class="filter-options">
+                <select id="specialtySelect" class="specialty-select">
+                  <option value="">All Specialties</option>
+                  <!-- Specialties will be populated by JavaScript -->
+                </select>
+
+                <div class="appointment-type-toggle2">
+                  <button id="inPersonBtn" class="active">In-Person</button>
+                  <button id="virtualBtn">Virtual</button>
                 </div>
-                
-                <div class="form-group">
-                  <label>Available Time Slots</label>
-                  <div class="time-slots" id="timeSlots">
-                    <!-- Will be populated by JavaScript -->
-                  </div>
-                </div>
-                
-                <div class="form-group">
-                  <label for="reasonVisit">Reason for Visit</label>
-                  <textarea id="reasonVisit" rows="3" placeholder="Briefly describe your symptoms or reason for appointment"></textarea>
-                </div>
-                
-                <div class="form-actions">
-                  <button class="btn secondary" id="cancelAppointment">Cancel</button>
-                  <button class="btn primary" id="confirmAppointment">Book Appointment</button>
-                </div>
+
+                <button id="clearFiltersBtn" class="clear-filters-btn2">Clear Filters</button>
               </div>
             </div>
+
+            <div id="doctorsList" class="doctors-list2">
+              <!-- Doctors will be populated by JavaScript -->
+            </div>
+          </div>
+
+          <!-- Step 2: Book appointment -->
+          <div id="step2" class="booking-section step-2">
+            <button id="backButton" class="back-button">
+              <i class="fa fa-arrow-left"></i> Back to doctor search
+            </button>
+
+            <div class="doctor-preview">
+              <div class="doctor-avatar">
+                <img id="selectedDoctorAvatar" src="/placeholder.svg" alt="Doctor" class="avatar-placeholder">
+              </div>
+              <div class="doctor-booking-info">
+                <h3 id="selectedDoctorName"></h3>
+                <p id="selectedDoctorSpecialty"></p>
+                <p id="selectedDoctorHospital" class="hospital-name"></p>
+                <p id="appointmentTypeLabel" class="appointment-type-label">In-Person Visit</p>
+              </div>
+            </div>
+
+            <div id="bookingConflicts" class="booking-conflicts-alert hidden">
+              <h4>⚠️ Scheduling Conflicts</h4>
+              <p>You already have the following appointment(s) on this date:</p>
+              <ul id="conflictsList">
+                <!-- Conflicts will be populated by JavaScript -->
+              </ul>
+            </div>
+
+            <form id="appointmentForm" class="appointment-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="appointmentDate">Select Date</label>
+                  <input id="appointmentDate" type="date" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="locationSelect">Location</label>
+                  <select id="locationSelect" required>
+                    <!-- Locations will be populated by JavaScript -->
+                  </select>
+                </div>
+
+                <div class="form-group check-availability">
+                  <button type="button" id="checkAvailabilityBtn" class="check-availability-btn-small">
+                    Check Availability
+                  </button>
+                </div>
+              </div>
+
+              <div id="loadingSpinner" class="loading-spinner-container hidden">
+                <div class="loading-spinner"></div>
+                <p>Checking availability...</p>
+              </div>
+
+              <div id="timeSlotsContainer" class="form-group hidden">
+                <label>Select Time</label>
+                <div id="timeSlots" class="time-slots">
+                  <!-- Time slots will be populated by JavaScript -->
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="appointmentReason">Reason for Visit</label>
+                <textarea id="appointmentReason" placeholder="Briefly describe your symptoms or reason for this appointment" required></textarea>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="insuranceProvider">Insurance Provider</label>
+                  <input id="insuranceProvider" type="text" placeholder="e.g. RSSB, MMI, Radiant">
+                </div>
+
+                <div class="form-group">
+                  <label for="memberId">Member ID</label>
+                  <input id="memberId" type="text" placeholder="e.g. XYZ123456789">
+                </div>
+              </div>
+
+              <div class="appointment-summary">
+                <h4>Appointment Summary</h4>
+                <div class="summary-details">
+                  <div class="summary-item">
+                    <span class="summary-label">Doctor:</span>
+                    <span id="summaryDoctor" class="summary-value">Not selected</span>
+                  </div>
+                  <div class="summary-item">
+                    <span class="summary-label">Specialty:</span>
+                    <span id="summarySpecialty" class="summary-value">Not selected</span>
+                  </div>
+                  <div class="summary-item">
+                    <span class="summary-label">Date:</span>
+                    <span id="summaryDate" class="summary-value">Not selected</span>
+                  </div>
+                  <div class="summary-item">
+                    <span class="summary-label">Time:</span>
+                    <span id="summaryTime" class="summary-value">Not selected</span>
+                  </div>
+                  <div class="summary-item">
+                    <span class="summary-label">Location:</span>
+                    <span id="summaryLocation" class="summary-value">Not selected</span>
+                  </div>
+                  <div class="summary-item">
+                    <span class="summary-label">Type:</span>
+                    <span id="summaryType" class="summary-value">In-Person Visit</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" id="bookAppointmentBtn" class="book-appointment-btn" disabled>
+                  Confirm Appointment
+                </button>
+              </div>
+            </form>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   </div>
 
-  <script src="js/main.js"></script>
-  <script src="js/appointments.js"></script>
+  <script src="navbar.js"></script>
+  <script src="sidebar.js"></script>
+  <script src="appointments.js"></script>
 </body>
 </html>
