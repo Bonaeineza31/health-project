@@ -1,400 +1,362 @@
-// dashboard.js - Handles all functionality for the Evruriro Health Dashboard
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Load components
-    loadNavbar();
-    loadSidebar();
+// Load components
+document.addEventListener('DOMContentLoaded', async function() {
+    // Load navbar
+    const navbarResponse = await fetch('navbar.html');
+    const navbarHtml = await navbarResponse.text();
+    document.getElementById('navbar-container').innerHTML = navbarHtml;
     
-    // Check authentication status
-    const isGuest = localStorage.getItem('guestMode') === 'true';
-    const token = localStorage.getItem('token');
+    // Load sidebar
+    const sidebarResponse = await fetch('sidebar.html');
+    const sidebarHtml = await sidebarResponse.text();
+    document.getElementById('sidebar-container').innerHTML = sidebarHtml;
     
-    if (isGuest) {
-        // Handle guest mode
-        loadSampleData();
-        showGuestBanner();
-    } else if (!token) {
-        // Redirect to login if not authenticated and not in guest mode
-        window.location.href = 'welcome.html';
-    } else {
-        // Load authenticated user data
-        loadUserData();
-    }
-    
-    // Set up event listeners
-    setupEventListeners();
-    
-    // Initialize charts
-    initializeCharts();
+    // Initialize dashboard
+    initDashboard();
 });
 
-// Load the navbar component
-function loadNavbar() {
-    const navbarContainer = document.getElementById('navbar-container');
-    if (navbarContainer) {
-        navbarContainer.innerHTML = `
-            <nav class="navbar">
-                <div class="logo">
-                    <a href="dashboard.html">
-                        <img src="images/logo.png" alt="Evruriro Logo">
-                        <span>Evruriro Health</span>
-                    </a>
-                </div>
-                <div class="navbar-search">
-                    <i class="fa fa-search"></i>
-                    <input type="text" placeholder="Search...">
-                </div>
-                <div class="navbar-actions">
-                    <button class="notification-btn">
-                        <i class="fa fa-bell"></i>
-                        <span class="badge">3</span>
-                    </button>
-                    <div class="user-menu">
-                        <button class="user-btn">
-                            <img src="images/avatar-placeholder.png" alt="User Avatar">
-                            <span id="userName">User</span>
-                            <i class="fa fa-chevron-down"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a href="profile.html"><i class="fa fa-user"></i> Profile</a>
-                            <a href="settings.html"><i class="fa fa-cog"></i> Settings</a>
-                            <a href="#" id="logoutBtn"><i class="fa fa-sign-out"></i> Logout</a>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-        `;
-        
-        // Set username if available
-        const userEmail = localStorage.getItem('userEmail');
-        const userName = document.getElementById('userName');
-        if (userName && userEmail) {
-            userName.textContent = userEmail.split('@')[0];
-        }
-        
-        // Setup logout button
-        const logoutBtn = document.getElementById('logoutBtn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                logout();
-            });
-        }
-        
-        // Setup dropdown toggle
-        const userBtn = document.querySelector('.user-btn');
-        if (userBtn) {
-            userBtn.addEventListener('click', function() {
-                document.querySelector('.dropdown-menu').classList.toggle('show');
-            });
-        }
-    }
-}
+function initDashboard() {
+    // DOM Elements
+    const updateVitalsBtn = document.getElementById('updateVitalsBtn');
+    const vitalsModal = document.getElementById('vitalsModal');
+    const cancelVitalsBtn = document.getElementById('cancelVitalsBtn');
+    const saveVitalsBtn = document.getElementById('saveVitalsBtn');
+    const weekBtn = document.getElementById('weekBtn');
+    const monthBtn = document.getElementById('monthBtn');
+    const yearBtn = document.getElementById('yearBtn');
 
-// Load the sidebar component
-function loadSidebar() {
-    const sidebarContainer = document.getElementById('sidebar-container');
-    if (sidebarContainer) {
-        sidebarContainer.innerHTML = `
-            <div class="sidebar">
-                <ul class="sidebar-menu">
-                    <li class="sidebar-item active">
-                        <a href="dashboard.html">
-                            <i class="fa fa-dashboard"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="appointments.html">
-                            <i class="fa fa-calendar"></i>
-                            <span>Appointments</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="teleconsultation.html">
-                            <i class="fa fa-video-camera"></i>
-                            <span>Teleconsultation</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="records.html">
-                            <i class="fa fa-file-medical-alt"></i>
-                            <span>Medical Records</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="prescriptions.html">
-                            <i class="fa fa-prescription"></i>
-                            <span>Prescriptions</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="hospitals.html">
-                            <i class="fa fa-hospital-o"></i>
-                            <span>Find Hospital</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="profile.html">
-                            <i class="fa fa-user"></i>
-                            <span>Profile</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="settings.html">
-                            <i class="fa fa-cog"></i>
-                            <span>Settings</span>
-                        </a>
-                    </li>
-                </ul>
-                <div class="sidebar-footer">
-                    <a href="help.html">
-                        <i class="fa fa-question-circle"></i>
-                        <span>Help & Support</span>
-                    </a>
-                </div>
-            </div>
-        `;
-    }
-}
+    // Vital inputs
+    const heartRateInput = document.getElementById('heartRateInput');
+    const bloodPressureInput = document.getElementById('bloodPressureInput');
+    const temperatureInput = document.getElementById('temperatureInput');
+    const oxygenInput = document.getElementById('oxygenInput');
+    const weightInput = document.getElementById('weightInput');
 
-// Display a banner for guest mode
-function showGuestBanner() {
-    const banner = document.createElement('div');
-    banner.className = 'guest-banner';
-    banner.innerHTML = 'You are browsing in Guest Mode. <a href="welcome.html">Sign in</a> to access your personal data.';
-    
-    const contentContainer = document.querySelector('.content-container');
-    if (contentContainer) {
-        contentContainer.prepend(banner);
-    }
-}
+    // Vital displays
+    const heartRateValue = document.getElementById('heartRateValue');
+    const bloodPressureValue = document.getElementById('bloodPressureValue');
+    const temperatureValue = document.getElementById('temperatureValue');
+    const oxygenValue = document.getElementById('oxygenValue');
+    const weightValue = document.getElementById('weightValue');
 
-// Load sample data for guest users
-function loadSampleData() {
-    // Set vital signs data
-    updateElementText('heartRate', '72 bpm');
-    updateElementText('bloodPressure', '120/80 mmHg');
-    updateElementText('temperature', '36.6 °C');
-    updateElementText('oxygenLevel', '98%');
-    updateElementText('weight', '70.5 kg');
-    
-    // Load sample appointments
-    const appointmentsList = document.getElementById('appointmentsList');
-    if (appointmentsList) {
-        appointmentsList.innerHTML = `
-            <div class="appointment-item">
-                <div class="appointment-date">
-                    <span class="day">15</span>
-                    <span class="month">Apr</span>
-                </div>
-                <div class="appointment-details">
-                    <h3>General Checkup</h3>
-                    <p>Dr. Sarah Johnson</p>
-                    <p>10:00 AM - 10:30 AM</p>
-                </div>
-                <div class="appointment-actions">
-                    <button class="btn secondary">Reschedule</button>
-                </div>
-            </div>
-            <div class="appointment-item">
-                <div class="appointment-date">
-                    <span class="day">22</span>
-                    <span class="month">Apr</span>
-                </div>
-                <div class="appointment-details">
-                    <h3>Dental Consultation</h3>
-                    <p>Dr. Michael Chen</p>
-                    <p>2:00 PM - 3:00 PM</p>
-                </div>
-                <div class="appointment-actions">
-                    <button class="btn secondary">Reschedule</button>
-                </div>
-            </div>
-        `;
-    }
-    
-    // Load sample activity
-    const activityList = document.getElementById('activityList');
-    if (activityList) {
-        activityList.innerHTML = `
-            <div class="activity-item">
-                <div class="activity-icon">
-                    <i class="fa fa-calendar-check-o"></i>
-                </div>
-                <div class="activity-details">
-                    <p>Appointment confirmed with Dr. Sarah Johnson</p>
-                    <span class="activity-time">2 days ago</span>
-                </div>
-            </div>
-            <div class="activity-item">
-                <div class="activity-icon">
-                    <i class="fa fa-file-text-o"></i>
-                </div>
-                <div class="activity-details">
-                    <p>Lab results uploaded</p>
-                    <span class="activity-time">5 days ago</span>
-                </div>
-            </div>
-            <div class="activity-item">
-                <div class="activity-icon">
-                    <i class="fa fa-medkit"></i>
-                </div>
-                <div class="activity-details">
-                    <p>Prescription renewed</p>
-                    <span class="activity-time">1 week ago</span>
-                </div>
-            </div>
-        `;
-    }
-}
+    // Vital status indicators
+    const heartRateStatus = document.getElementById('heartRateStatus');
+    const bloodPressureStatus = document.getElementById('bloodPressureStatus');
+    const temperatureStatus = document.getElementById('temperatureStatus');
+    const oxygenStatus = document.getElementById('oxygenStatus');
 
-// Load real user data from the backend
-async function loadUserData() {
-    const token = localStorage.getItem('token');
-    const API_URL = 'https://evuriro-backend.onrender.com';
-    
-    try {
-        // Fetch user profile
-        const profileResponse = await fetch(`${API_URL}/user/profile`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        
-        if (!profileResponse.ok) {
-            throw new Error('Failed to fetch user profile');
+    // Language elements
+    const welcomeHeader = document.getElementById('welcomeHeader');
+    const summaryTitle = document.getElementById('summaryTitle');
+    const heartRateLabel = document.getElementById('heartRateLabel');
+    const bloodPressureLabel = document.getElementById('bloodPressureLabel');
+    const temperatureLabel = document.getElementById('temperatureLabel');
+    const oxygenLabel = document.getElementById('oxygenLabel');
+    const weightLabel = document.getElementById('weightLabel');
+    const historyLabel = document.getElementById('historyLabel');
+    const appointmentsTitle = document.getElementById('appointmentsTitle');
+    const quickActionsTitle = document.getElementById('quickActionsTitle');
+    const scheduleLabel = document.getElementById('scheduleLabel');
+    const teleconsultLabel = document.getElementById('teleconsultLabel');
+    const uploadLabel = document.getElementById('uploadLabel');
+    const findHospitalLabel = document.getElementById('findHospitalLabel');
+    const recentActivityTitle = document.getElementById('recentActivityTitle');
+    const updateVitalsTitle = document.getElementById('updateVitalsTitle');
+    const heartRateModalLabel = document.getElementById('heartRateModalLabel');
+    const bloodPressureModalLabel = document.getElementById('bloodPressureModalLabel');
+    const temperatureModalLabel = document.getElementById('temperatureModalLabel');
+    const oxygenModalLabel = document.getElementById('oxygenModalLabel');
+    const weightModalLabel = document.getElementById('weightModalLabel');
+    const viewAllAppointmentsBtn = document.getElementById('viewAllAppointmentsBtn');
+    const viewAllActivityBtn = document.getElementById('viewAllActivityBtn');
+
+    // State variables
+    let currentLanguage = localStorage.getItem('language') || 'en';
+    let activeTrend = 'week';
+
+    // Vitals data
+    let vitals = {
+        heartRate: 72,
+        bloodPressure: '120/80',
+        temperature: 36.6,
+        oxygenLevel: 98,
+        weight: 70.5
+    };
+
+    // Translations
+    const translations = {
+        'en': {
+            'welcome': 'Welcome to Evuriro Health Dashboard',
+            'summary': 'Health Summary',
+            'appointments': 'Upcoming Appointments',
+            'vitals': 'Latest Vitals',
+            'quickActions': 'Quick Actions',
+            'scheduleBtn': 'Schedule Appointment',
+            'teleconsultBtn': 'Start Teleconsultation',
+            'uploadBtn': 'Upload Records',
+            'findHospitalBtn': 'Find Hospital',
+            'recentActivity': 'Recent Activity',
+            'heartRate': 'Heart Rate',
+            'bloodPressure': 'Blood Pressure',
+            'temperature': 'Temperature',
+            'oxygenLevel': 'Oxygen Level',
+            'weight': 'Weight',
+            'bpm': 'bpm',
+            'mmHg': 'mmHg',
+            'celsius': '°C',
+            'percentage': '%',
+            'kg': 'kg',
+            'noAppointments': 'No upcoming appointments',
+            'bookNow': 'Book Now',
+            'viewAll': 'View All',
+            'updateVitals': 'Update Vitals',
+            'connectDevice': 'Connect Device',
+            'history': 'History',
+            'week': 'Week',
+            'month': 'Month',
+            'year': 'Year',
+            'save': 'Save',
+            'cancel': 'Cancel'
+        },
+        'fr': {
+            'welcome': 'Bienvenue sur le tableau de bord de santé Evuriro',
+            'summary': 'Résumé de Santé',
+            'appointments': 'Rendez-vous à venir',
+            'vitals': 'Constantes Vitales Récentes',
+            'quickActions': 'Actions Rapides',
+            'scheduleBtn': 'Planifier un Rendez-vous',
+            'teleconsultBtn': 'Démarrer une Téléconsultation',
+            'uploadBtn': 'Télécharger des Documents',
+            'findHospitalBtn': 'Trouver un Hôpital',
+            'recentActivity': 'Activité Récente',
+            'heartRate': 'Fréquence Cardiaque',
+            'bloodPressure': 'Tension Artérielle',
+            'temperature': 'Température',
+            'oxygenLevel': 'Niveau d\'Oxygène',
+            'weight': 'Poids',
+            'bpm': 'bpm',
+            'mmHg': 'mmHg',
+            'celsius': '°C',
+            'percentage': '%',
+            'kg': 'kg',
+            'noAppointments': 'Aucun rendez-vous à venir',
+            'bookNow': 'Réserver',
+            'viewAll': 'Voir Tout',
+            'updateVitals': 'Mettre à jour les constantes',
+            'connectDevice': 'Connecter un appareil',
+            'history': 'Historique',
+            'week': 'Semaine',
+            'month': 'Mois',
+            'year': 'Année',
+            'save': 'Sauvegarder',
+            'cancel': 'Annuler'
+        },
+        'kin': {
+            'welcome': 'Murakaza neza kuri Evuriro dashbord y\'ubuzima',
+            'summary': 'Incamake y\'Ubuzima',
+            'appointments': 'Gahunda zizaza',
+            'vitals': 'Ibipimo by\'ubuzima',
+            'quickActions': 'Ibikorwa byihuse',
+            'scheduleBtn': 'Gufata Gahunda',
+            'teleconsultBtn': 'Gutangira Isuzuma kure',
+            'uploadBtn': 'Kohereza Inyandiko',
+            'findHospitalBtn': 'Gushaka Ibitaro',
+            'recentActivity': 'Ibikorwa bya Vuba',
+            'heartRate': 'Umutima',
+            'bloodPressure': 'Umuvuduko w\'Amaraso',
+            'temperature': 'Ubushyuhe',
+            'oxygenLevel': 'Urugero rw\'Umwuka',
+            'weight': 'Ibiro',
+            'bpm': 'bpm',
+            'mmHg': 'mmHg',
+            'celsius': '°C',
+            'percentage': '%',
+            'kg': 'kg',
+            'noAppointments': 'Nta gahunda zizaza',
+            'bookNow': 'Fata Gahunda',
+            'viewAll': 'Reba Byose',
+            'updateVitals': 'Kuvugurura ibipimo',
+            'connectDevice': 'Guhuza ikintu',
+            'history': 'Amateka',
+            'week': 'Icyumweru',
+            'month': 'Ukwezi',
+            'year': 'Umwaka',
+            'save': 'Kubika',
+            'cancel': 'Guhagarika'
         }
-        
-        const profileData = await profileResponse.json();
-        
-        // Update user name in navbar
-        const userName = document.getElementById('userName');
-        if (userName && profileData.name) {
-            userName.textContent = profileData.name;
-        }
-        
-        // TODO: Fetch and display real vital signs, appointments, and activity
-        // For now, use sample data until backend endpoints are available
-        loadSampleData();
-        
-    } catch (error) {
-        console.error('Error loading user data:', error);
-        // If there's an error fetching user data, fall back to sample data
-        loadSampleData();
-    }
-}
+    };
 
-// Set up event listeners for the dashboard
-function setupEventListeners() {
-    // Update vitals button
-    const updateVitalsBtn = document.getElementById('updateVitals');
-    if (updateVitalsBtn) {
-        updateVitalsBtn.addEventListener('click', function() {
-            alert('This feature will allow you to manually update your vital signs.');
-        });
-    }
-    
-    // Connect device button
-    const connectDeviceBtn = document.getElementById('connectDevice');
-    if (connectDeviceBtn) {
-        connectDeviceBtn.addEventListener('click', function() {
-            alert('This feature will allow you to connect health monitoring devices.');
-        });
-    }
-    
-    // Chart tabs
-    const chartTabs = document.querySelectorAll('.chart-tab');
-    chartTabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            // Remove active class from all tabs
-            chartTabs.forEach(t => t.classList.remove('active'));
-            // Add active class to clicked tab
-            this.classList.add('active');
-            // Update chart data based on selected time period
-            updateChartData(this.textContent.trim());
-        });
+    // Update vitals modal
+    updateVitalsBtn.addEventListener('click', () => {
+        // Set current values in the form
+        heartRateInput.value = vitals.heartRate;
+        bloodPressureInput.value = vitals.bloodPressure;
+        temperatureInput.value = vitals.temperature;
+        oxygenInput.value = vitals.oxygenLevel;
+        weightInput.value = vitals.weight;
+
+        // Show modal
+        vitalsModal.style.display = 'flex';
     });
-    
-    // View tabs for appointments
-    const viewTabs = document.querySelectorAll('.view-tab');
-    viewTabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            // Remove active class from all tabs
-            viewTabs.forEach(t => t.classList.remove('active'));
-            // Add active class to clicked tab
-            this.classList.add('active');
-            // Update appointments list based on selected view
-            updateAppointmentsView(this.textContent.trim());
-        });
+
+    // Cancel vitals update
+    cancelVitalsBtn.addEventListener('click', () => {
+        vitalsModal.style.display = 'none';
     });
-}
 
-// Initialize charts for the dashboard
-function initializeCharts() {
-    const chartContainer = document.getElementById('vitalsChart');
-    if (chartContainer) {
-        // Draw a simple chart using HTML/CSS for now
-        // This would normally use a chart library like Chart.js
-        chartContainer.innerHTML = `
-            <div class="dummy-chart">
-                <div class="chart-placeholder">
-                    <div class="chart-bar" style="height: 60%;" title="Week 1: 72bpm"></div>
-                    <div class="chart-bar" style="height: 75%;" title="Week 2: 75bpm"></div>
-                    <div class="chart-bar" style="height: 70%;" title="Week 3: 73bpm"></div>
-                    <div class="chart-bar" style="height: 65%;" title="Week 4: 71bpm"></div>
-                </div>
-                <div class="chart-labels">
-                    <span>Week 1</span>
-                    <span>Week 2</span>
-                    <span>Week 3</span>
-                    <span>Week 4</span>
-                </div>
-            </div>
-        `;
+    // Save vitals update
+    saveVitalsBtn.addEventListener('click', () => {
+        // Update vitals data
+        vitals.heartRate = parseInt(heartRateInput.value);
+        vitals.bloodPressure = bloodPressureInput.value;
+        vitals.temperature = parseFloat(temperatureInput.value);
+        vitals.oxygenLevel = parseInt(oxygenInput.value);
+        vitals.weight = parseFloat(weightInput.value);
+
+        // Update display
+        updateVitalsDisplay();
+
+        // Hide modal
+        vitalsModal.style.display = 'none';
+    });
+
+    // Update vitals display
+    function updateVitalsDisplay() {
+        // Update values
+        heartRateValue.textContent = `${vitals.heartRate} ${translations[currentLanguage].bpm}`;
+        bloodPressureValue.textContent = `${vitals.bloodPressure} ${translations[currentLanguage].mmHg}`;
+        temperatureValue.textContent = `${vitals.temperature} ${translations[currentLanguage].celsius}`;
+        oxygenValue.textContent = `${vitals.oxygenLevel}${translations[currentLanguage].percentage}`;
+        weightValue.textContent = `${vitals.weight} ${translations[currentLanguage].kg}`;
+
+        // Update status indicators
+        updateVitalStatus('heartRate', vitals.heartRate, heartRateStatus);
+        updateVitalStatus('bloodPressure', vitals.bloodPressure, bloodPressureStatus);
+        updateVitalStatus('temperature', vitals.temperature, temperatureStatus);
+        updateVitalStatus('oxygenLevel', vitals.oxygenLevel, oxygenStatus);
     }
-}
 
-// Update chart data based on selected time period
-function updateChartData(period) {
-    console.log(`Updating chart for period: ${period}`);
-    // This would normally fetch and display data for the selected period
-    // For now, we'll just log the action
-}
+    // Update vital status indicator
+    function updateVitalStatus(type, value, element) {
+        let status = 'normal';
 
-// Update appointments list based on selected view
-function updateAppointmentsView(view) {
-    console.log(`Updating appointments view: ${view}`);
-    // This would normally fetch and display appointments based on the selected view
-    // For now, we'll just log the action
-}
-
-// Helper function to update text content of an element
-function updateElementText(id, text) {
-    const element = document.getElementById(id);
-    if (element) {
-        element.textContent = text;
-    }
-}
-
-// Handle logout
-function logout() {
-    // Clear all stored data
-    localStorage.removeItem('token');
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('guestMode');
-    
-    // Redirect to welcome page
-    window.location.href = 'welcome.html';
-}
-
-// Close dropdown menus when clicking outside
-document.addEventListener('click', function(e) {
-    const dropdowns = document.querySelectorAll('.dropdown-menu');
-    dropdowns.forEach(dropdown => {
-        if (!e.target.closest('.user-menu') && dropdown.classList.contains('show')) {
-            dropdown.classList.remove('show');
+        switch (type) {
+            case 'heartRate':
+                status = value < 60 || value > 100 ? 'warning' : 'normal';
+                break;
+            case 'bloodPressure':
+                const [systolic, diastolic] = value.split('/').map(Number);
+                status = (systolic > 140 || diastolic > 90) ? 'warning' : 'normal';
+                break;
+            case 'temperature':
+                status = value < 36 || value > 37.5 ? 'warning' : 'normal';
+                break;
+            case 'oxygenLevel':
+                status = value < 95 ? 'warning' : 'normal';
+                break;
         }
+
+        // Remove all status classes
+        element.classList.remove('normal', 'warning', 'critical');
+        // Add the appropriate status class
+        element.classList.add(status);
+    }
+
+    // Trend period buttons
+    weekBtn.addEventListener('click', () => setActiveTrend('week'));
+    monthBtn.addEventListener('click', () => setActiveTrend('month'));
+    yearBtn.addEventListener('click', () => setActiveTrend('year'));
+
+    // Set active trend period
+    function setActiveTrend(period) {
+        activeTrend = period;
+
+        // Update active button
+        weekBtn.classList.remove('active');
+        monthBtn.classList.remove('active');
+        yearBtn.classList.remove('active');
+
+        if (period === 'week') weekBtn.classList.add('active');
+        if (period === 'month') monthBtn.classList.add('active');
+        if (period === 'year') yearBtn.classList.add('active');
+    }
+
+    // Change language function
+    function changeLanguage(lang) {
+        currentLanguage = lang;
+        
+        // Update all text elements
+        updateTranslations();
+
+        // Save to localStorage
+        localStorage.setItem('language', lang);
+    }
+
+    // Update translations
+    function updateTranslations() {
+        const text = translations[currentLanguage];
+
+        // Update page title
+        welcomeHeader.textContent = text.welcome;
+
+        // Update health summary section
+        summaryTitle.textContent = text.summary;
+        heartRateLabel.textContent = text.heartRate;
+        bloodPressureLabel.textContent = text.bloodPressure;
+        temperatureLabel.textContent = text.temperature;
+        oxygenLabel.textContent = text.oxygenLevel;
+        weightLabel.textContent = text.weight;
+
+        // Update vitals display
+        heartRateValue.textContent = `${vitals.heartRate} ${text.bpm}`;
+        bloodPressureValue.textContent = `${vitals.bloodPressure} ${text.mmHg}`;
+        temperatureValue.textContent = `${vitals.temperature} ${text.celsius}`;
+        oxygenValue.textContent = `${vitals.oxygenLevel}${text.percentage}`;
+        weightValue.textContent = `${vitals.weight} ${text.kg}`;
+
+        // Update buttons
+        updateVitalsBtn.textContent = text.updateVitals;
+        document.querySelector('.connect-device-btn').textContent = text.connectDevice;
+
+        // Update history section
+        historyLabel.textContent = text.history;
+        weekBtn.textContent = text.week;
+        monthBtn.textContent = text.month;
+        yearBtn.textContent = text.year;
+
+        // Update appointments section
+        appointmentsTitle.textContent = text.appointments;
+        viewAllAppointmentsBtn.textContent = text.viewAll;
+
+        // Update quick actions section
+        quickActionsTitle.textContent = text.quickActions;
+        scheduleLabel.textContent = text.scheduleBtn;
+        teleconsultLabel.textContent = text.teleconsultBtn;
+        uploadLabel.textContent = text.uploadBtn;
+        findHospitalLabel.textContent = text.findHospitalBtn;
+
+        // Update recent activity section
+        recentActivityTitle.textContent = text.recentActivity;
+        viewAllActivityBtn.textContent = text.viewAll;
+
+        // Update modal
+        updateVitalsTitle.textContent = text.updateVitals;
+        heartRateModalLabel.textContent = text.heartRate;
+        bloodPressureModalLabel.textContent = text.bloodPressure;
+        temperatureModalLabel.textContent = text.temperature;
+        oxygenModalLabel.textContent = text.oxygenLevel;
+        weightModalLabel.textContent = text.weight;
+        cancelVitalsBtn.textContent = text.cancel;
+        saveVitalsBtn.textContent = text.save;
+    }
+
+    // Listen for language change events from navbar
+    document.addEventListener('languageChange', (e) => {
+        changeLanguage(e.detail.language);
     });
-});
+    document.addEventListener('themeChange', (e) => {
+        document.documentElement.setAttribute('data-theme', e.detail.theme);
+    });
+
+    updateVitalsDisplay();
+    updateTranslations();
+}

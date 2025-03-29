@@ -1,263 +1,286 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Evruriro Health Dashboard</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="main.css">
-  <link rel="stylesheet" href="dashboard.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Evuriro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
-  <div class="app-container">
-    <!-- Navbar directly included -->
-    <div class="navbar">
-      <div class="navbar-left">
-        <a href="dashboard.html" class="logo">
-          <img src="images/logo.svg" alt="Evruriro Logo" class="logo-img">
-          <span class="logo-text">Evuriro</span>
-        </a>
-      </div>
-      
-      <div class="navbar-center">
-        <div class="search-container">
-          <input type="text" class="search-input" placeholder="search">
-          <button class="search-button">
-            <i class="fa fa-search"></i>
-          </button>
+    <div class="app-container">
+        <!-- Include Navbar -->
+        <div id="navbar-container"></div>
+
+        <div class="content-container">
+            <!-- Include Sidebar -->
+            <div id="sidebar-container"></div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <div class="dashboard-page">
+                    <div class="dashboard-container">
+                        <header class="dashboard-header">
+                            <h1 id="welcomeHeader">Welcome to Evuriro Health Dashboard</h1>
+                        </header>
+
+                        <div class="dashboard-grid">
+                            <!-- Health summary section -->
+                            <section class="dashboard-card health-summary">
+                                <h2 id="summaryTitle">Health Summary</h2>
+                                <div class="vitals-grid">
+                                    <div class="vital-item">
+                                        <div class="vital-status normal" id="heartRateStatus"></div>
+                                        <div class="vital-icon">
+                                            <i class="fa fa-heartbeat"></i>
+                                        </div>
+                                        <div class="vital-info">
+                                            <span class="vital-name" id="heartRateLabel">Heart Rate</span>
+                                            <span class="vital-value" id="heartRateValue">72 bpm</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="vital-item">
+                                        <div class="vital-status normal" id="bloodPressureStatus"></div>
+                                        <div class="vital-icon">
+                                            <i class="fa fa-tint"></i>
+                                        </div>
+                                        <div class="vital-info">
+                                            <span class="vital-name" id="bloodPressureLabel">Blood Pressure</span>
+                                            <span class="vital-value" id="bloodPressureValue">120/80 mmHg</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="vital-item">
+                                        <div class="vital-status normal" id="temperatureStatus"></div>
+                                        <div class="vital-icon">
+                                            <i class="fa fa-thermometer-half"></i>
+                                        </div>
+                                        <div class="vital-info">
+                                            <span class="vital-name" id="temperatureLabel">Temperature</span>
+                                            <span class="vital-value" id="temperatureValue">36.6 °C</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="vital-item">
+                                        <div class="vital-status normal" id="oxygenStatus"></div>
+                                        <div class="vital-icon">
+                                            <i class="fa fa-lungs"></i>
+                                        </div>
+                                        <div class="vital-info">
+                                            <span class="vital-name" id="oxygenLabel">Oxygen Level</span>
+                                            <span class="vital-value" id="oxygenValue">98%</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="vital-item">
+                                        <div class="vital-status normal"></div>
+                                        <div class="vital-icon">
+                                            <i class="fa fa-balance-scale"></i>
+                                        </div>
+                                        <div class="vital-info">
+                                            <span class="vital-name" id="weightLabel">Weight</span>
+                                            <span class="vital-value" id="weightValue">70.5 kg</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Vital actions -->
+                                <div class="vital-actions">
+                                    <button class="update-vitals-btn" id="updateVitalsBtn">
+                                        Update Vitals
+                                    </button>
+                                    <a href="devices.html" class="connect-device-btn">
+                                        Connect Device
+                                    </a>
+                                </div>
+
+                                <!-- Vital trends visualization -->
+                                <div class="vital-trends">
+                                    <div class="trends-header">
+                                        <h3 id="historyLabel">History</h3>
+                                        <div class="trends-period-selector">
+                                            <button
+                                                class="period-btn active"
+                                                id="weekBtn"
+                                            >
+                                                Week
+                                            </button>
+                                            <button
+                                                class="period-btn"
+                                                id="monthBtn"
+                                            >
+                                                Month
+                                            </button>
+                                            <button
+                                                class="period-btn"
+                                                id="yearBtn"
+                                            >
+                                                Year
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="trend-chart">
+                                        <div class="chart-placeholder">
+                                            <div class="chart-line"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- Upcoming appointments section -->
+                            <section class="dashboard-card appointments">
+                                <div class="card-header">
+                                    <h2 id="appointmentsTitle">Upcoming Appointments</h2>
+                                    <button class="view-all-btn" id="viewAllAppointmentsBtn">View All</button>
+                                </div>
+
+                                <div class="appointment-list" id="appointmentsList">
+                                    <div class="appointment-item">
+                                        <div class="appointment-icon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <div class="appointment-details">
+                                            <h3>Dr. Sarah Johnson</h3>
+                                            <p>Cardiology</p>
+                                            <div class="appointment-time">
+                                                <span class="date">03/01/2025</span>
+                                                <span class="time">10:00 AM</span>
+                                                <span class="type">In-person</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- Quick actions section -->
+                            <section class="dashboard-card quick-actions2">
+                                <h2 id="quickActionsTitle">Quick Actions</h2>
+                                <div class="action-buttons2">
+                                    <a href="appointments.html" class="action-btn2 schedule-btn">
+                                        <i class="fa fa-calendar"></i>
+                                        <span id="scheduleLabel">Schedule Appointment</span>
+                                    </a>
+                                    <a href="teleconsultation.html" class="action-btn2 teleconsult-btn">
+                                        <i class="fa fa-video-camera"></i>
+                                        <span id="teleconsultLabel">Start Teleconsultation</span>
+                                    </a>
+                                    <a href="uprecords.html" class="action-btn2 upload-btn">
+                                        <i class="fa fa-upload"></i>
+                                        <span id="uploadLabel">Upload Records</span>
+                                    </a>
+                                    <a href="hospitals.html" class="action-btn2 hospital-btn">
+                                        <i class="fa fa-hospital-o"></i>
+                                        <span id="findHospitalLabel">Find Hospital</span>
+                                    </a>
+                                </div>
+                            </section>
+
+                            <!-- Recent activity section -->
+                            <section class="dashboard-card recent-activity">
+                                <div class="card-header">
+                                    <h2 id="recentActivityTitle">Recent Activity</h2>
+                                    <button class="view-all-btn" id="viewAllActivityBtn">View All</button>
+                                </div>
+
+                                <div class="activity-list">
+                                    <div class="activity-item">
+                                        <div class="activity-icon medication-icon">
+                                            <i class="fa fa-medkit"></i>
+                                        </div>
+                                        <div class="activity-details">
+                                            <p class="activity-description">Took blood pressure medication</p>
+                                            <span class="activity-time">2 hours ago</span>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon appointment-icon">
+                                            <i class="fa fa-calendar-check-o"></i>
+                                        </div>
+                                        <div class="activity-details">
+                                            <p class="activity-description">Booked appointment with Dr. Johnson</p>
+                                            <span class="activity-time">Yesterday</span>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon teleconsult-icon">
+                                            <i class="fa fa-video-camera"></i>
+                                        </div>
+                                        <div class="activity-details">
+                                            <p class="activity-description">Completed teleconsultation with Dr. Smith</p>
+                                            <span class="activity-time">3 days ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Update Vitals Modal -->
+                <div class="modal-overlay" id="vitalsModal" style="display: none;">
+                    <div class="modal-content">
+                        <h2 id="updateVitalsTitle">Update Vitals</h2>
+                        <div class="form-group">
+                            <label id="heartRateModalLabel">Heart Rate</label>
+                            <input
+                                type="number"
+                                id="heartRateInput"
+                                value="72"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label id="bloodPressureModalLabel">Blood Pressure</label>
+                            <input
+                                type="text"
+                                id="bloodPressureInput"
+                                value="120/80"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label id="temperatureModalLabel">Temperature</label>
+                            <input
+                                type="number"
+                                step="0.1"
+                                id="temperatureInput"
+                                value="36.6"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label id="oxygenModalLabel">Oxygen Level</label>
+                            <input
+                                type="number"
+                                id="oxygenInput"
+                                value="98"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label id="weightModalLabel">Weight</label>
+                            <input
+                                type="number"
+                                step="0.1"
+                                id="weightInput"
+                                value="70.5"
+                            />
+                        </div>
+                        <div class="modal-actions">
+                            <button class="cancel-btn" id="cancelVitalsBtn">
+                                Cancel
+                            </button>
+                            <button class="save-btn" id="saveVitalsBtn">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <div class="main-nav">
-          <a href="dashboard.html" class="nav-link active">Dashboard</a>
-          <a href="teleconsultation.html" class="nav-link">Teleconsultation</a>
-          <a href="records.html" class="nav-link">Records</a>
-          <a href="hospitals.html" class="nav-link">Nearby Hospitals</a>
-          <a href="doctors.html" class="nav-link">Find a Doctor</a>
-        </div>
-      </div>
-      
-      <div class="navbar-right">
-        <a href="#" class="icon-button">
-          <i class="fa fa-phone"></i>
-        </a>
-        <a href="#" class="icon-button">
-          <i class="fa fa-bell"></i>
-        </a>
-        <div class="user-profile">
-          <div class="profile-avatar">J</div>
-        </div>
-        <div class="language-selector">
-          <a href="#" class="active">EN</a>
-          <a href="#">FR</a>
-          <a href="#">KIN</a>
-        </div>
-      </div>
     </div>
 
-    <div class="content-container">
-      <!-- Sidebar directly included -->
-      <div class="sidebar">
-        <div class="sidebar-menu">
-          <a href="dashboard.html" class="menu-item active">
-            <i class="fa fa-th-large"></i>
-            <span>Dashboard</span>
-          </a>
-          
-          <a href="appointments.html" class="menu-item">
-            <i class="fa fa-calendar"></i>
-            <span>Appointments</span>
-          </a>
-          
-          <a href="teleconsultation.html" class="menu-item">
-            <i class="fa fa-video-camera"></i>
-            <span>Teleconsultation</span>
-          </a>
-          
-          <a href="records.html" class="menu-item">
-            <i class="fa fa-file-text"></i>
-            <span>Medical Records</span>
-          </a>
-          
-          <a href="hospitals.html" class="menu-item">
-            <i class="fa fa-hospital-o"></i>
-            <span>Nearby Hospitals</span>
-          </a>
-          
-          <a href="devices.html" class="menu-item">
-            <i class="fa fa-plug"></i>
-            <span>Connect Device</span>
-          </a>
-        </div>
-        
-        <div class="sidebar-footer">
-          <a href="settings.html" class="menu-item">
-            <i class="fa fa-cog"></i>
-            <span>Settings</span>
-          </a>
-          
-          <a href="help.html" class="menu-item">
-            <i class="fa fa-question-circle"></i>
-            <span>Help Center</span>
-          </a>
-          
-          <div class="dark-mode-toggle">
-            <i class="fa fa-moon-o"></i>
-            <span>Dark Mode</span>
-          </div>
-        </div>
-      </div>
-      
-      <main class="main-content">
-        <div class="page-header">
-          <h1>Welcome to Evruriro Health Dashboard</h1>
-        </div>
-        
-        <div class="dashboard-grid">
-          <!-- Health Summary Section -->
-          <div class="card health-summary">
-            <h2>Health Summary</h2>
-            <div class="vitals-grid">
-              <div class="vital-item">
-                <div class="vital-icon heart-icon">
-                  <i class="fa fa-heart"></i>
-                </div>
-                <div class="vital-info">
-                  <span class="vital-label">Heart Rate</span>
-                  <span class="vital-value" id="heartRate">-- bpm</span>
-                </div>
-                <div class="vital-status normal"></div>
-              </div>
-              
-              <div class="vital-item">
-                <div class="vital-icon bp-icon">
-                  <i class="fa fa-tachometer"></i>
-                </div>
-                <div class="vital-info">
-                  <span class="vital-label">Blood Pressure</span>
-                  <span class="vital-value" id="bloodPressure">--/-- mmHg</span>
-                </div>
-                <div class="vital-status normal"></div>
-              </div>
-              
-              <div class="vital-item">
-                <div class="vital-icon temp-icon">
-                  <i class="fa fa-thermometer-half"></i>
-                </div>
-                <div class="vital-info">
-                  <span class="vital-label">Temperature</span>
-                  <span class="vital-value" id="temperature">--.-- °C</span>
-                </div>
-                <div class="vital-status normal"></div>
-              </div>
-              
-              <div class="vital-item">
-                <div class="vital-icon oxygen-icon">
-                  <i class="fa fa-medkit"></i>
-                </div>
-                <div class="vital-info">
-                  <span class="vital-label">Oxygen Level</span>
-                  <span class="vital-value" id="oxygenLevel">---%</span>
-                </div>
-                <div class="vital-status normal"></div>
-              </div>
-              
-              <div class="vital-item">
-                <div class="vital-icon weight-icon">
-                  <i class="fa fa-balance-scale"></i>
-                </div>
-                <div class="vital-info">
-                  <span class="vital-label">Weight</span>
-                  <span class="vital-value" id="weight">--.-- kg</span>
-                </div>
-                <div class="vital-status normal"></div>
-              </div>
-            </div>
-            
-            <div class="vital-actions">
-              <button class="btn primary" id="updateVitals">Update Vitals</button>
-              <button class="btn secondary" id="connectDevice">Connect Device</button>
-            </div>
-            
-            <div class="vitals-chart">
-              <h3>History</h3>
-              <div class="chart-tabs">
-                <button class="chart-tab active">Week</button>
-                <button class="chart-tab">Month</button>
-                <button class="chart-tab">Year</button>
-              </div>
-              <div class="chart-container" id="vitalsChart">
-                <!-- Chart will be rendered by JavaScript -->
-              </div>
-            </div>
-          </div>
-          
-          <!-- Appointments Section -->
-          <div class="card appointments">
-            <div class="card-header">
-              <h2>Upcoming Appointments</h2>
-              <div class="view-tabs">
-                <button class="view-tab active">Upcoming</button>
-                <button class="view-tab">Past</button>
-                <button class="view-tab">View All</button>
-              </div>
-            </div>
-            
-            <div class="appointments-list" id="appointmentsList">
-              <!-- Will be populated by JavaScript -->
-            </div>
-          </div>
-          
-          <!-- Quick Actions Section -->
-          <div class="card quick-actions">
-            <h2>Quick Actions</h2>
-            <div class="actions-grid">
-              <a href="appointments.html" class="action-item">
-                <div class="action-icon">
-                  <i class="fa fa-calendar-plus-o"></i>
-                </div>
-                <span>Schedule Appointment</span>
-              </a>
-              
-              <a href="teleconsultation.html" class="action-item">
-                <div class="action-icon">
-                  <i class="fa fa-video-camera"></i>
-                </div>
-                <span>Start Teleconsultation</span>
-              </a>
-              
-              <a href="records.html" class="action-item">
-                <div class="action-icon">
-                  <i class="fa fa-upload"></i>
-                </div>
-                <span>Upload Records</span>
-              </a>
-              
-              <a href="hospitals.html" class="action-item">
-                <div class="action-icon">
-                  <i class="fa fa-hospital-o"></i>
-                </div>
-                <span>Find Hospital</span>
-              </a>
-            </div>
-          </div>
-          
-          <!-- Recent Activity Section -->
-          <div class="card recent-activity">
-            <div class="card-header">
-              <h2>Recent Activity</h2>
-              <a href="#" class="view-all">View All</a>
-            </div>
-            
-            <div class="activity-list" id="activityList">
-              <!-- Will be populated by JavaScript -->
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
-  </div>
-
-  <script src="main.js"></script>
-  <script src="dashboard.js"></script>
+    <script src="navbar.js"></script>
+    <script src="sidebar.js"></script>
+    <script src="dashboard.js"></script>
 </body>
 </html>
