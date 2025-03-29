@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Help Center - Evuriro</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="navbar.css">
+  <link rel="stylesheet" href="sidebar.css">
+  <link rel="stylesheet" href="help.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Include Navbar -->
+    <div id="navbar-container"></div>
+
+    <div class="content-container">
+      <!-- Include Sidebar -->
+      <div id="sidebar-container"></div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="help-center-container">
+          <div class="help-center-header">
+            <h1>Help Center</h1>
+            <p>Find answers to your questions and get support for your teleconsultation</p>
+            <form class="help-search-bar" id="helpSearchForm">
+              <input
+                type="text"
+                placeholder="Search for help..."
+                class="help-search-input"
+                id="helpSearchInput"
+              />
+              <button type="submit" class="help-search-button">
+                <i class="fa fa-search search-icon"></i> Search
+              </button>
+            </form>
+          </div>
+
+          <div class="help-center-content">
+            <div class="help-categories">
+              <h3>Categories</h3>
+              <ul id="helpCategories">
+                <li class="active" data-category="appointment">
+                  <span class="category-icon"><i class="fa fa-calendar"></i></span>
+                  Appointments
+                </li>
+                <li data-category="technical">
+                  <span class="category-icon"><i class="fa fa-wrench"></i></span>
+                  Technical Support
+                </li>
+                <li data-category="billing">
+                  <span class="category-icon"><i class="fa fa-money"></i></span>
+                  Billing & Insurance
+                </li>
+                <li data-category="medical">
+                  <span class="category-icon"><i class="fa fa-medkit"></i></span>
+                  Medical Questions
+                </li>
+                <li data-category="privacy">
+                  <span class="category-icon"><i class="fa fa-shield"></i></span>
+                  Privacy & Security
+                </li>
+              </ul>
+
+              <div class="contact-support">
+                <h3>Need more help?</h3>
+                <button
+                  class="contact-button"
+                  id="contactSupportBtn"
+                >
+                  <i class="fa fa-headset button-icon"></i> Contact Support
+                </button>
+                <p class="support-hours">Available 24/7</p>
+              </div>
+            </div>
+
+            <div class="faq-section">
+              <h2 id="faqSectionTitle">
+                <span class="category-icon-header">
+                  <i class="fa fa-calendar"></i>
+                </span>
+                Appointments
+              </h2>
+
+              <div class="faq-list" id="faqList">
+                <!-- FAQ items will be loaded dynamically -->
+              </div>
+            </div>
+          </div>
+
+          <div class="quick-links">
+            <h3>Quick Links</h3>
+            <div class="links-container">
+              <a href="#" class="quick-link">
+                <i class="fa fa-book link-icon"></i>
+                User Guide
+              </a>
+              <a href="#" class="quick-link">
+                <i class="fa fa-video-camera link-icon"></i>
+                Video Tutorials
+              </a>
+              <a href="#" class="quick-link">
+                <i class="fa fa-mobile link-icon"></i>
+                Device Setup
+              </a>
+              <a href="#" class="quick-link">
+                <i class="fa fa-clipboard link-icon"></i>
+                Appointment Checklist
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Form Modal -->
+  <div class="contact-form-modal" id="contactFormModal">
+    <div class="contact-form-container">
+      <div class="contact-form-header">
+        <h3><i class="fa fa-headset"></i> Contact Support</h3>
+        <button
+          class="close-button"
+          id="closeModalBtn"
+        >
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+      <form id="contactForm">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="subject">Subject</label>
+          <input
+            type="text"
+            id="subject"
+            name="subject"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea
+            id="message"
+            name="message"
+            required
+            rows="5"
+          ></textarea>
+        </div>
+        <button type="submit" class="submit-button">
+          <i class="fa fa-paper-plane button-icon"></i> Send Message
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="navbar.js"></script>
+  <script src="sidebar.js"></script>
+  <script src="help.js"></script>
+</body>
+</html>
